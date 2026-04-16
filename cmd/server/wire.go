@@ -6,11 +6,11 @@
 package main
 
 import (
-	"github.com/example/kratos-template/internal/biz"
-	"github.com/example/kratos-template/internal/conf"
-	"github.com/example/kratos-template/internal/data"
-	"github.com/example/kratos-template/internal/server"
-	"github.com/example/kratos-template/internal/service"
+	"github.com/topcms/kratos-template/internal/biz"
+	"github.com/topcms/kratos-template/internal/conf"
+	"github.com/topcms/kratos-template/internal/data"
+	"github.com/topcms/kratos-template/internal/server"
+	"github.com/topcms/kratos-template/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

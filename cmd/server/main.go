@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"github.com/example/kratos-template/internal/conf"
+	"github.com/topcms/kratos-template/internal/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -20,7 +20,7 @@ import (
 var (
 	Name string
 	// Version is the version of the compiled software.
-	Version string
+	Version  string
 	flagconf string
 
 	id, _ = os.Hostname()
