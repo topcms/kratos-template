@@ -7,29 +7,41 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/topcms/kratos-template/internal/biz"
 	"github.com/topcms/kratos-template/internal/conf"
 	"github.com/topcms/kratos-template/internal/data"
+	"github.com/topcms/kratos-template/internal/registry"
 	"github.com/topcms/kratos-template/internal/server"
 	"github.com/topcms/kratos-template/internal/service"
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
+)
+
+import (
+	_ "go.uber.org/automaxprocs"
 )
 
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
+func wireApp(confServer *conf.Server, confData *conf.Data, confRegistry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
 	dataData, cleanup, err := data.NewData(confData)
 	if err != nil {
 		return nil, nil, err
 	}
-	userRepo := data.NewUserRepo(dataData, logger)
+	consulParts, err := registry.NewConsulParts(confRegistry)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	discovery := registry.NewDiscoveryFromParts(consulParts)
+	userRepo := data.NewUserRepo(dataData, logger, discovery, confData)
 	userUsecase := biz.NewUserUsecase(userRepo)
 	userService := service.NewUserService(userUsecase)
 	grpcServer := server.NewGRPCServer(confServer, userService, logger)
 	httpServer := server.NewHTTPServer(confServer, userService, logger)
-	app := newApp(logger, grpcServer, httpServer)
+	registrar := registry.NewRegistrarFromParts(consulParts)
+	app := newApp(logger, grpcServer, httpServer, registrar)
 	return app, func() {
 		cleanup()
 	}, nil

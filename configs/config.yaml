@@ -9,7 +9,18 @@ data:
   database:
     driver: mysql
     source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
+    max_idle_conns: 10
+    max_open_conns: 100
+    conn_max_lifetime: 1m
   redis:
     addr: 127.0.0.1:6379
+    password: ""
+    db: 0
+    dial_timeout: 1s
     read_timeout: 0.2s
     write_timeout: 0.2s
+  remote:
+    user_service:
+      # discovery:///user.service 的 user.service 对应被调用服务在 kratos.New() 中配置的 kratos.Name
+      service_name: user.service
+      dial_timeout: 2s

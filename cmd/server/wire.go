@@ -9,6 +9,7 @@ import (
 	"github.com/topcms/kratos-template/internal/biz"
 	"github.com/topcms/kratos-template/internal/conf"
 	"github.com/topcms/kratos-template/internal/data"
+	templateRegistry "github.com/topcms/kratos-template/internal/registry"
 	"github.com/topcms/kratos-template/internal/server"
 	"github.com/topcms/kratos-template/internal/service"
 
@@ -18,6 +19,13 @@ import (
 )
 
 // wireApp init kratos application.
-func wireApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
-	panic(wire.Build(server.ProviderSet, data.ProviderSet, biz.ProviderSet, service.ProviderSet, newApp))
+func wireApp(*conf.Server, *conf.Data, *conf.Registry, log.Logger) (*kratos.App, func(), error) {
+	panic(wire.Build(
+		server.ProviderSet,
+		data.ProviderSet,
+		biz.ProviderSet,
+		service.ProviderSet,
+		templateRegistry.ProviderSet,
+		newApp,
+	))
 }

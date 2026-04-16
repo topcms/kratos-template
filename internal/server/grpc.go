@@ -5,8 +5,11 @@ import (
 	"github.com/topcms/kratos-template/internal/conf"
 	"github.com/topcms/kratos-template/internal/service"
 
+	infralogging "github.com/topcms/kratos-infra/middleware/logging"
+	infrarecovery "github.com/topcms/kratos-infra/middleware/recovery"
+	infratracing "github.com/topcms/kratos-infra/middleware/tracing"
+
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 )
 
@@ -14,7 +17,9 @@ import (
 func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
-			recovery.Recovery(),
+			infratracing.Server(),
+			infralogging.Server(logger),
+			infrarecovery.Server(),
 		),
 	}
 	if c.Grpc.Network != "" {
