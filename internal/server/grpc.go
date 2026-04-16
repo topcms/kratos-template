@@ -5,21 +5,30 @@ import (
 	"github.com/topcms/kratos-template/internal/conf"
 	"github.com/topcms/kratos-template/internal/service"
 
+	infraauth "github.com/topcms/kratos-infra/middleware/auth"
 	infralogging "github.com/topcms/kratos-infra/middleware/logging"
 	infrarecovery "github.com/topcms/kratos-infra/middleware/recovery"
 	infratracing "github.com/topcms/kratos-infra/middleware/tracing"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger, validate infraauth.TokenValidator) *grpc.Server {
+	mids := []middleware.Middleware{
+		infratracing.Server(),
+		infralogging.Server(logger),
+	}
+	if validate != nil {
+		mids = append(mids, infraauth.Server(validate))
+	}
+	mids = append(mids, infrarecovery.Server())
+
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
-			infratracing.Server(),
-			infralogging.Server(logger),
-			infrarecovery.Server(),
+			mids...,
 		),
 	}
 	if c.Grpc.Network != "" {

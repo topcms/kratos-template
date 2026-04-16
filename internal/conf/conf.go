@@ -6,6 +6,7 @@ import "time"
 type Bootstrap struct {
 	Server   *Server   `json:"server" yaml:"server"`
 	Data     *Data     `json:"data" yaml:"data"`
+	Auth     *Auth     `json:"auth" yaml:"auth"`
 	Registry *Registry `json:"registry" yaml:"registry"`
 }
 
@@ -66,6 +67,20 @@ type RemoteUserService struct {
 	// ServiceName 必须与被调用服务的 kratos.Name 一致（即 registry 的 ServiceInstance.Name）。
 	ServiceName string        `json:"service_name" yaml:"service_name"`
 	DialTimeout time.Duration `json:"dial_timeout" yaml:"dial_timeout"`
+}
+
+// Auth 鉴权配置。
+type Auth struct {
+	JWT *JWT `json:"jwt" yaml:"jwt"`
+}
+
+// JWT 配置（当前通过 kratos-infra/auth/jwt 支持 HS256）。
+type JWT struct {
+	Enabled       bool     `json:"enabled" yaml:"enabled"`
+	SigningMethod string   `json:"signing_method" yaml:"signing_method"`
+	Secret        string   `json:"secret" yaml:"secret"`
+	Issuer        string   `json:"issuer" yaml:"issuer"`
+	Audience      []string `json:"audience" yaml:"audience"`
 }
 
 // Registry 服务注册/发现配置（对应 configs/registry.yaml）。
