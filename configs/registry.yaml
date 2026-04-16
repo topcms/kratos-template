@@ -1,0 +1,7 @@
+# 服务注册/发现示例（按实际注册中心调整）
+registry:
+  # consul / etcd / nacos / kubernetes 等
+  type: consul
+  consul:
+    address: 127.0.0.1:8500
+    scheme: http

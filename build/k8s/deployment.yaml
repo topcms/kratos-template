@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kratos-template
+  labels:
+    app: kratos-template
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kratos-template
+  template:
+    metadata:
+      labels:
+        app: kratos-template
+    spec:
+      containers:
+        - name: server
+          image: kratos-template:latest
+          imagePullPolicy: IfNotPresent
+          args: ["-conf", "/app/configs"]
+          ports:
+            - name: http
+              containerPort: 8000
+            - name: grpc
+              containerPort: 9000
+          volumeMounts:
+            - name: config
+              mountPath: /app/configs
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kratos-template-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kratos-template
+spec:
+  selector:
+    app: kratos-template
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+    - name: grpc
+      port: 9000
+      targetPort: grpc
