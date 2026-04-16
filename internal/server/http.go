@@ -1,7 +1,7 @@
 package server
 
 import (
-	v1 "github.com/example/kratos-template/api/helloworld/v1"
+	//v1 "github.com/example/kratos-template/api/helloworld/v1"
 	"github.com/example/kratos-template/internal/conf"
 	"github.com/example/kratos-template/internal/service"
 
@@ -27,6 +27,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	//v1.RegisterGreeterHTTPServer(srv, greeter)
 	return srv
 }
