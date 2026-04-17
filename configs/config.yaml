@@ -8,10 +8,12 @@ server:
 data:
   database:
     driver: mysql
-    source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
+    source: root:liu123456@tcp(127.0.0.1:3306)/kratos_demo?parseTime=True&loc=Local
+    # 业务表统一前缀；gorm.io/gen 生成 Go 模型名/文件名时会剥掉此前缀
+    table_prefix: "ts_"
     max_idle_conns: 10
     max_open_conns: 100
-    conn_max_lifetime: 1m
+    conn_max_lifetime: 60s
   redis:
     addr: 127.0.0.1:6379
     password: ""

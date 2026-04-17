@@ -50,7 +50,7 @@ func NewUserRepo(data *Data, logger log.Logger, discovery registry.Discovery, c 
 	var dialTimeout time.Duration
 	if remote != nil {
 		serviceName = remote.ServiceName
-		dialTimeout = remote.DialTimeout
+		dialTimeout = remote.DialTimeout.AsDuration()
 	}
 	if dialTimeout <= 0 {
 		dialTimeout = 2 * time.Second // fallback：确保 WithTimeout 不会瞬间超时
@@ -167,14 +167,26 @@ func (r *userRepo) findLocal(ctx context.Context, id int64) (*biz.User, error) {
 }
 
 func (r *userRepo) findLocalFromDB(ctx context.Context, id int64) (*biz.User, error) {
-	var m userModel
-	if err := r.data.db.WithContext(ctx).First(&m, id).Error; err != nil {
+	u := r.data.q.User
+	result, err := u.WithContext(ctx).Where(u.ID.Eq(int32(id))).First()
+	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err
 	}
-	return &biz.User{ID: m.ID, Name: m.Name, Avatar: m.Avatar}, nil
+	return &biz.User{
+		ID:     int64(result.ID),
+		Name:   derefStr(result.UserName),
+		Avatar: derefStr(result.Avatar),
+	}, nil
+}
+
+func derefStr(p *string) string {
+	if p == nil {
+		return ""
+	}
+	return *p
 }
 
 func (r *userRepo) cacheUser(ctx context.Context, key string, u *biz.User) {
@@ -186,15 +198,4 @@ func (r *userRepo) cacheUser(ctx context.Context, key string, u *biz.User) {
 		return
 	}
 	_ = r.data.redis.Set(ctx, key, string(b), userCacheTTL).Err()
-}
-
-// userModel 是演示用的 gorm model（用于 auto-migrate 与查询）。
-type userModel struct {
-	ID     int64  `gorm:"primaryKey;column:id"`
-	Name   string `gorm:"column:name"`
-	Avatar string `gorm:"column:avatar"`
-}
-
-func (userModel) TableName() string {
-	return "users"
 }

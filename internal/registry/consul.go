@@ -42,7 +42,7 @@ func NewConsulParts(c *templateconf.Registry) (*ConsulParts, error) {
 		Address:   c.Consul.Address,
 		Scheme:    c.Consul.Scheme,
 		Token:     c.Consul.Token,
-		WaitEvery: c.Consul.WaitEvery,
+		WaitEvery: c.Consul.WaitEvery.AsDuration(),
 	})
 	if err != nil {
 		return nil, err

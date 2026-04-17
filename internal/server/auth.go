@@ -9,14 +9,14 @@ import (
 
 // NewTokenValidator adapts template config to infra jwt validator.
 func NewTokenValidator(c *conf.Auth) (infraauth.TokenValidator, error) {
-	if c == nil || c.JWT == nil {
+	if c == nil || c.Jwt == nil {
 		return nil, nil
 	}
 	return infrajwt.NewTokenValidator(infrajwt.Config{
-		Enabled:       c.JWT.Enabled,
-		SigningMethod: c.JWT.SigningMethod,
-		Secret:        c.JWT.Secret,
-		Issuer:        c.JWT.Issuer,
-		Audience:      c.JWT.Audience,
+		Enabled:       c.Jwt.Enabled,
+		SigningMethod: c.Jwt.SigningMethod,
+		Secret:        c.Jwt.Secret,
+		Issuer:        c.Jwt.Issuer,
+		Audience:      c.Jwt.Audience,
 	})
 }

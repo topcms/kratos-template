@@ -2,6 +2,7 @@ package data
 
 import (
 	"github.com/topcms/kratos-template/internal/conf"
+	"github.com/topcms/kratos-template/internal/data/query"
 
 	infraMySQL "github.com/topcms/kratos-infra/mysql"
 	infraRedis "github.com/topcms/kratos-infra/redis"
@@ -20,6 +21,7 @@ var ProviderSet = wire.NewSet(NewData, NewUserRepo)
 type Data struct {
 	db    *gorm.DB
 	redis *goredis.Client
+	q     *query.Query // gen 生成的类型安全 Query，通过 query.Use(db) 绑定
 }
 
 // NewData .
@@ -27,9 +29,9 @@ func NewData(c *conf.Data) (*Data, func(), error) {
 	// 1) init mysql
 	db, err := infraMySQL.NewDB(infraMySQL.Config{
 		DSN:             c.Database.Source,
-		MaxIdleConns:    c.Database.MaxIdleConns,
-		MaxOpenConns:    c.Database.MaxOpenConns,
-		ConnMaxLifetime: c.Database.ConnMaxLifetime,
+		MaxIdleConns:    int(c.Database.MaxIdleConns),
+		MaxOpenConns:    int(c.Database.MaxOpenConns),
+		ConnMaxLifetime: c.Database.ConnMaxLifetime.AsDuration(),
 	})
 	if err != nil {
 		return nil, nil, err
@@ -38,20 +40,16 @@ func NewData(c *conf.Data) (*Data, func(), error) {
 	rd := infraRedis.NewClient(infraRedis.Config{
 		Addr:         c.Redis.Addr,
 		Password:     c.Redis.Password,
-		DB:           c.Redis.DB,
-		DialTimeout:  c.Redis.DialTimeout,
-		ReadTimeout:  c.Redis.ReadTimeout,
-		WriteTimeout: c.Redis.WriteTimeout,
+		DB:           int(c.Redis.Db),
+		DialTimeout:  c.Redis.DialTimeout.AsDuration(),
+		ReadTimeout:  c.Redis.ReadTimeout.AsDuration(),
+		WriteTimeout: c.Redis.WriteTimeout.AsDuration(),
 	})
-
-	// 3) migrate (demo：仅包含 user 表)
-	if err := db.AutoMigrate(&userModel{}); err != nil {
-		return nil, nil, err
-	}
 
 	d := &Data{
 		db:    db,
 		redis: rd,
+		q:     query.Use(db), // 将 *gorm.DB 绑定到 gen Query，复用同一连接池
 	}
 
 	cleanup := func() {
