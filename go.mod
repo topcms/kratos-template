@@ -7,7 +7,7 @@ require (
 	github.com/go-kratos/kratos/v2 v2.9.2
 	github.com/google/wire v0.7.0
 	github.com/redis/go-redis/v9 v9.18.0
-	github.com/topcms/kratos-infra v0.1.1
+	github.com/topcms/kratos-infra v0.1.2
 	go.uber.org/automaxprocs v1.6.0
 	go.uber.org/zap v1.26.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
@@ -45,4 +45,4 @@ require (
 	gorm.io/driver/mysql v1.6.0 // indirect
 )
 
-replace github.com/topcms/kratos-infra => ../kratos-infra
+//replace github.com/topcms/kratos-infra => ../kratos-infra
