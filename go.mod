@@ -9,7 +9,7 @@ require (
 	github.com/redis/go-redis/v9 v9.18.0
 	github.com/topcms/kratos-infra v0.1.2
 	go.uber.org/automaxprocs v1.6.0
-	go.uber.org/zap v1.26.0
+	go.uber.org/zap v1.27.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
 	google.golang.org/grpc v1.80.0
 	google.golang.org/protobuf v1.36.11
