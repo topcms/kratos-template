@@ -19,41 +19,121 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationUserServiceCreateUser = "/api.user.v1.UserService/CreateUser"
 const OperationUserServiceGetUser = "/api.user.v1.UserService/GetUser"
+const OperationUserServiceListUser = "/api.user.v1.UserService/ListUser"
+const OperationUserServiceUpdateUser = "/api.user.v1.UserService/UpdateUser"
 
 type UserServiceHTTPServer interface {
-	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	// CreateUser 新增
+	CreateUser(context.Context, *ReqUserCreate) (*RspUserCreate, error)
+	// GetUser 单个获取
+	GetUser(context.Context, *ReqUserDetail) (*RspUserDetail, error)
+	// ListUser 列表获取
+	ListUser(context.Context, *ReqUserList) (*RspUserList, error)
+	// UpdateUser 更新
+	UpdateUser(context.Context, *ReqUserUpdate) (*RspUserUpdate, error)
 }
 
 func RegisterUserServiceHTTPServer(s *http.Server, srv UserServiceHTTPServer) {
 	r := s.Route("/")
-	r.GET("/v1/users/{id}", _UserService_GetUser0_HTTP_Handler(srv))
+	r.GET("/v1/user/detail", _UserService_GetUser0_HTTP_Handler(srv))
+	r.POST("/v1/user/create", _UserService_CreateUser0_HTTP_Handler(srv))
+	r.PUT("/v1/user/update", _UserService_UpdateUser0_HTTP_Handler(srv))
+	r.GET("/v1/user/list", _UserService_ListUser0_HTTP_Handler(srv))
 }
 
 func _UserService_GetUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetUserRequest
+		var in ReqUserDetail
 		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationUserServiceGetUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetUser(ctx, req.(*GetUserRequest))
+			return srv.GetUser(ctx, req.(*ReqUserDetail))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetUserResponse)
+		reply := out.(*RspUserDetail)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _UserService_CreateUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ReqUserCreate
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserServiceCreateUser)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateUser(ctx, req.(*ReqUserCreate))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RspUserCreate)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _UserService_UpdateUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ReqUserUpdate
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserServiceUpdateUser)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateUser(ctx, req.(*ReqUserUpdate))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RspUserUpdate)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _UserService_ListUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ReqUserList
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserServiceListUser)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListUser(ctx, req.(*ReqUserList))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RspUserList)
 		return ctx.Result(200, reply)
 	}
 }
 
 type UserServiceHTTPClient interface {
-	GetUser(ctx context.Context, req *GetUserRequest, opts ...http.CallOption) (rsp *GetUserResponse, err error)
+	// CreateUser 新增
+	CreateUser(ctx context.Context, req *ReqUserCreate, opts ...http.CallOption) (rsp *RspUserCreate, err error)
+	// GetUser 单个获取
+	GetUser(ctx context.Context, req *ReqUserDetail, opts ...http.CallOption) (rsp *RspUserDetail, err error)
+	// ListUser 列表获取
+	ListUser(ctx context.Context, req *ReqUserList, opts ...http.CallOption) (rsp *RspUserList, err error)
+	// UpdateUser 更新
+	UpdateUser(ctx context.Context, req *ReqUserUpdate, opts ...http.CallOption) (rsp *RspUserUpdate, err error)
 }
 
 type UserServiceHTTPClientImpl struct {
@@ -64,13 +144,56 @@ func NewUserServiceHTTPClient(client *http.Client) UserServiceHTTPClient {
 	return &UserServiceHTTPClientImpl{client}
 }
 
-func (c *UserServiceHTTPClientImpl) GetUser(ctx context.Context, in *GetUserRequest, opts ...http.CallOption) (*GetUserResponse, error) {
-	var out GetUserResponse
-	pattern := "/v1/users/{id}"
+// CreateUser 新增
+func (c *UserServiceHTTPClientImpl) CreateUser(ctx context.Context, in *ReqUserCreate, opts ...http.CallOption) (*RspUserCreate, error) {
+	var out RspUserCreate
+	pattern := "/v1/user/create"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationUserServiceCreateUser))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// GetUser 单个获取
+func (c *UserServiceHTTPClientImpl) GetUser(ctx context.Context, in *ReqUserDetail, opts ...http.CallOption) (*RspUserDetail, error) {
+	var out RspUserDetail
+	pattern := "/v1/user/detail"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationUserServiceGetUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// ListUser 列表获取
+func (c *UserServiceHTTPClientImpl) ListUser(ctx context.Context, in *ReqUserList, opts ...http.CallOption) (*RspUserList, error) {
+	var out RspUserList
+	pattern := "/v1/user/list"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationUserServiceListUser))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// UpdateUser 更新
+func (c *UserServiceHTTPClientImpl) UpdateUser(ctx context.Context, in *ReqUserUpdate, opts ...http.CallOption) (*RspUserUpdate, error) {
+	var out RspUserUpdate
+	pattern := "/v1/user/update"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationUserServiceUpdateUser))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

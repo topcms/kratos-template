@@ -25,19 +25,36 @@ var File_user_v1_user_grpc_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_grpc_proto_rawDesc = "" +
 	"\n" +
-	"\x17user/v1/user_grpc.proto\x12\vapi.user.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x12user/v1/user.proto2k\n" +
-	"\vUserService\x12\\\n" +
-	"\aGetUser\x12\x1b.api.user.v1.GetUserRequest\x1a\x1c.api.user.v1.GetUserResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/users/{id}B2Z0github.com/topcms/kratos-template/api/user/v1;v1b\x06proto3"
+	"\x17user/v1/user_grpc.proto\x12\vapi.user.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x12user/v1/user.proto2\x84\x03\n" +
+	"\vUserService\x12Z\n" +
+	"\aGetUser\x12\x1a.api.user.v1.ReqUserDetail\x1a\x1a.api.user.v1.RspUserDetail\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1/user/detail\x12`\n" +
+	"\n" +
+	"CreateUser\x12\x1a.api.user.v1.ReqUserCreate\x1a\x1a.api.user.v1.RspUserCreate\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/create\x12`\n" +
+	"\n" +
+	"UpdateUser\x12\x1a.api.user.v1.ReqUserUpdate\x1a\x1a.api.user.v1.RspUserUpdate\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\x1a\x0f/v1/user/update\x12U\n" +
+	"\bListUser\x12\x18.api.user.v1.ReqUserList\x1a\x18.api.user.v1.RspUserList\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/listB2Z0github.com/topcms/kratos-template/api/user/v1;v1b\x06proto3"
 
 var file_user_v1_user_grpc_proto_goTypes = []any{
-	(*GetUserRequest)(nil),  // 0: api.user.v1.GetUserRequest
-	(*GetUserResponse)(nil), // 1: api.user.v1.GetUserResponse
+	(*ReqUserDetail)(nil), // 0: api.user.v1.ReqUserDetail
+	(*ReqUserCreate)(nil), // 1: api.user.v1.ReqUserCreate
+	(*ReqUserUpdate)(nil), // 2: api.user.v1.ReqUserUpdate
+	(*ReqUserList)(nil),   // 3: api.user.v1.ReqUserList
+	(*RspUserDetail)(nil), // 4: api.user.v1.RspUserDetail
+	(*RspUserCreate)(nil), // 5: api.user.v1.RspUserCreate
+	(*RspUserUpdate)(nil), // 6: api.user.v1.RspUserUpdate
+	(*RspUserList)(nil),   // 7: api.user.v1.RspUserList
 }
 var file_user_v1_user_grpc_proto_depIdxs = []int32{
-	0, // 0: api.user.v1.UserService.GetUser:input_type -> api.user.v1.GetUserRequest
-	1, // 1: api.user.v1.UserService.GetUser:output_type -> api.user.v1.GetUserResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: api.user.v1.UserService.GetUser:input_type -> api.user.v1.ReqUserDetail
+	1, // 1: api.user.v1.UserService.CreateUser:input_type -> api.user.v1.ReqUserCreate
+	2, // 2: api.user.v1.UserService.UpdateUser:input_type -> api.user.v1.ReqUserUpdate
+	3, // 3: api.user.v1.UserService.ListUser:input_type -> api.user.v1.ReqUserList
+	4, // 4: api.user.v1.UserService.GetUser:output_type -> api.user.v1.RspUserDetail
+	5, // 5: api.user.v1.UserService.CreateUser:output_type -> api.user.v1.RspUserCreate
+	6, // 6: api.user.v1.UserService.UpdateUser:output_type -> api.user.v1.RspUserUpdate
+	7, // 7: api.user.v1.UserService.ListUser:output_type -> api.user.v1.RspUserList
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

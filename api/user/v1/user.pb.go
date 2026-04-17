@@ -22,30 +22,46 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// User 为用户领域核心实体。
-type User struct {
+// UserInfo 为用户信息实体。
+type UserInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Avatar        string                 `protobuf:"bytes,3,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	UserCode      string                 `protobuf:"bytes,2,opt,name=user_code,json=userCode,proto3" json:"user_code,omitempty"`
+	UserName      string                 `protobuf:"bytes,3,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	UserType      string                 `protobuf:"bytes,4,opt,name=user_type,json=userType,proto3" json:"user_type,omitempty"`
+	RealName      string                 `protobuf:"bytes,5,opt,name=real_name,json=realName,proto3" json:"real_name,omitempty"`
+	UserDesc      string                 `protobuf:"bytes,6,opt,name=user_desc,json=userDesc,proto3" json:"user_desc,omitempty"`
+	Email         string                 `protobuf:"bytes,7,opt,name=email,proto3" json:"email,omitempty"`
+	Gender        int32                  `protobuf:"varint,8,opt,name=gender,proto3" json:"gender,omitempty"`
+	Tel           string                 `protobuf:"bytes,9,opt,name=tel,proto3" json:"tel,omitempty"`
+	Mobile        string                 `protobuf:"bytes,10,opt,name=mobile,proto3" json:"mobile,omitempty"`
+	DeptCode      string                 `protobuf:"bytes,11,opt,name=dept_code,json=deptCode,proto3" json:"dept_code,omitempty"`
+	Avatar        string                 `protobuf:"bytes,12,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	AvatarThumb   string                 `protobuf:"bytes,13,opt,name=avatar_thumb,json=avatarThumb,proto3" json:"avatar_thumb,omitempty"`
+	IsAccount     int32                  `protobuf:"varint,14,opt,name=is_account,json=isAccount,proto3" json:"is_account,omitempty"`
+	State         int32                  `protobuf:"varint,15,opt,name=state,proto3" json:"state,omitempty"`
+	CreatedBy     string                 `protobuf:"bytes,16,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,17,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedBy     string                 `protobuf:"bytes,18,opt,name=updated_by,json=updatedBy,proto3" json:"updated_by,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,19,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *User) Reset() {
-	*x = User{}
+func (x *UserInfo) Reset() {
+	*x = UserInfo{}
 	mi := &file_user_v1_user_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *User) String() string {
+func (x *UserInfo) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*User) ProtoMessage() {}
+func (*UserInfo) ProtoMessage() {}
 
-func (x *User) ProtoReflect() protoreflect.Message {
+func (x *UserInfo) ProtoReflect() protoreflect.Message {
 	mi := &file_user_v1_user_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -57,33 +73,199 @@ func (x *User) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use User.ProtoReflect.Descriptor instead.
-func (*User) Descriptor() ([]byte, []int) {
+// Deprecated: Use UserInfo.ProtoReflect.Descriptor instead.
+func (*UserInfo) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetId() int64 {
+func (x *UserInfo) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *User) GetName() string {
+func (x *UserInfo) GetUserCode() string {
 	if x != nil {
-		return x.Name
+		return x.UserCode
 	}
 	return ""
 }
 
-func (x *User) GetAvatar() string {
+func (x *UserInfo) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *UserInfo) GetUserType() string {
+	if x != nil {
+		return x.UserType
+	}
+	return ""
+}
+
+func (x *UserInfo) GetRealName() string {
+	if x != nil {
+		return x.RealName
+	}
+	return ""
+}
+
+func (x *UserInfo) GetUserDesc() string {
+	if x != nil {
+		return x.UserDesc
+	}
+	return ""
+}
+
+func (x *UserInfo) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *UserInfo) GetGender() int32 {
+	if x != nil {
+		return x.Gender
+	}
+	return 0
+}
+
+func (x *UserInfo) GetTel() string {
+	if x != nil {
+		return x.Tel
+	}
+	return ""
+}
+
+func (x *UserInfo) GetMobile() string {
+	if x != nil {
+		return x.Mobile
+	}
+	return ""
+}
+
+func (x *UserInfo) GetDeptCode() string {
+	if x != nil {
+		return x.DeptCode
+	}
+	return ""
+}
+
+func (x *UserInfo) GetAvatar() string {
 	if x != nil {
 		return x.Avatar
 	}
 	return ""
 }
 
-type GetUserRequest struct {
+func (x *UserInfo) GetAvatarThumb() string {
+	if x != nil {
+		return x.AvatarThumb
+	}
+	return ""
+}
+
+func (x *UserInfo) GetIsAccount() int32 {
+	if x != nil {
+		return x.IsAccount
+	}
+	return 0
+}
+
+func (x *UserInfo) GetState() int32 {
+	if x != nil {
+		return x.State
+	}
+	return 0
+}
+
+func (x *UserInfo) GetCreatedBy() string {
+	if x != nil {
+		return x.CreatedBy
+	}
+	return ""
+}
+
+func (x *UserInfo) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *UserInfo) GetUpdatedBy() string {
+	if x != nil {
+		return x.UpdatedBy
+	}
+	return ""
+}
+
+func (x *UserInfo) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+// UserList 为用户列表数据结构。
+type UserList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	List          []*UserInfo            `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserList) Reset() {
+	*x = UserList{}
+	mi := &file_user_v1_user_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserList) ProtoMessage() {}
+
+func (x *UserList) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserList.ProtoReflect.Descriptor instead.
+func (*UserList) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UserList) GetList() []*UserInfo {
+	if x != nil {
+		return x.List
+	}
+	return nil
+}
+
+func (x *UserList) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+// ReqUserDetail 单个用户查询请求。
+type ReqUserDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	Id            int64                  `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
@@ -91,21 +273,21 @@ type GetUserRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUserRequest) Reset() {
-	*x = GetUserRequest{}
-	mi := &file_user_v1_user_proto_msgTypes[1]
+func (x *ReqUserDetail) Reset() {
+	*x = ReqUserDetail{}
+	mi := &file_user_v1_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUserRequest) String() string {
+func (x *ReqUserDetail) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUserRequest) ProtoMessage() {}
+func (*ReqUserDetail) ProtoMessage() {}
 
-func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_v1_user_proto_msgTypes[1]
+func (x *ReqUserDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,48 +298,49 @@ func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
-func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_user_v1_user_proto_rawDescGZIP(), []int{1}
+// Deprecated: Use ReqUserDetail.ProtoReflect.Descriptor instead.
+func (*ReqUserDetail) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetUserRequest) GetMetadata() *v1.Metadata {
+func (x *ReqUserDetail) GetMetadata() *v1.Metadata {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *GetUserRequest) GetId() int64 {
+func (x *ReqUserDetail) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetUserResponse struct {
+// RspUserDetail 单个用户查询响应。
+type RspUserDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
-	User          *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUserResponse) Reset() {
-	*x = GetUserResponse{}
-	mi := &file_user_v1_user_proto_msgTypes[2]
+func (x *RspUserDetail) Reset() {
+	*x = RspUserDetail{}
+	mi := &file_user_v1_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUserResponse) String() string {
+func (x *RspUserDetail) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUserResponse) ProtoMessage() {}
+func (*RspUserDetail) ProtoMessage() {}
 
-func (x *GetUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_v1_user_proto_msgTypes[2]
+func (x *RspUserDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,21 +351,355 @@ func (x *GetUserResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUserResponse.ProtoReflect.Descriptor instead.
-func (*GetUserResponse) Descriptor() ([]byte, []int) {
-	return file_user_v1_user_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use RspUserDetail.ProtoReflect.Descriptor instead.
+func (*RspUserDetail) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetUserResponse) GetMeta() *v1.Reply {
+func (x *RspUserDetail) GetMeta() *v1.Reply {
 	if x != nil {
 		return x.Meta
 	}
 	return nil
 }
 
-func (x *GetUserResponse) GetUser() *User {
+func (x *RspUserDetail) GetUser() *UserInfo {
 	if x != nil {
 		return x.User
+	}
+	return nil
+}
+
+// ReqUserCreate 用户新增请求。
+type ReqUserCreate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReqUserCreate) Reset() {
+	*x = ReqUserCreate{}
+	mi := &file_user_v1_user_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReqUserCreate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReqUserCreate) ProtoMessage() {}
+
+func (x *ReqUserCreate) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReqUserCreate.ProtoReflect.Descriptor instead.
+func (*ReqUserCreate) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ReqUserCreate) GetMetadata() *v1.Metadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *ReqUserCreate) GetUser() *UserInfo {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// RspUserCreate 用户新增响应。
+type RspUserCreate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RspUserCreate) Reset() {
+	*x = RspUserCreate{}
+	mi := &file_user_v1_user_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RspUserCreate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RspUserCreate) ProtoMessage() {}
+
+func (x *RspUserCreate) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RspUserCreate.ProtoReflect.Descriptor instead.
+func (*RspUserCreate) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *RspUserCreate) GetMeta() *v1.Reply {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *RspUserCreate) GetUser() *UserInfo {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// ReqUserUpdate 用户更新请求。
+type ReqUserUpdate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReqUserUpdate) Reset() {
+	*x = ReqUserUpdate{}
+	mi := &file_user_v1_user_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReqUserUpdate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReqUserUpdate) ProtoMessage() {}
+
+func (x *ReqUserUpdate) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReqUserUpdate.ProtoReflect.Descriptor instead.
+func (*ReqUserUpdate) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ReqUserUpdate) GetMetadata() *v1.Metadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *ReqUserUpdate) GetUser() *UserInfo {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// RspUserUpdate 用户更新响应。
+type RspUserUpdate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RspUserUpdate) Reset() {
+	*x = RspUserUpdate{}
+	mi := &file_user_v1_user_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RspUserUpdate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RspUserUpdate) ProtoMessage() {}
+
+func (x *RspUserUpdate) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RspUserUpdate.ProtoReflect.Descriptor instead.
+func (*RspUserUpdate) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *RspUserUpdate) GetMeta() *v1.Reply {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *RspUserUpdate) GetUser() *UserInfo {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// ReqUserList 用户列表查询请求。
+type ReqUserList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Page          int64                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	Size          int64                  `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReqUserList) Reset() {
+	*x = ReqUserList{}
+	mi := &file_user_v1_user_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReqUserList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReqUserList) ProtoMessage() {}
+
+func (x *ReqUserList) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReqUserList.ProtoReflect.Descriptor instead.
+func (*ReqUserList) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ReqUserList) GetMetadata() *v1.Metadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *ReqUserList) GetPage() int64 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ReqUserList) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+// RspUserList 用户列表查询响应。
+type RspUserList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	List          []*UserInfo            `protobuf:"bytes,3,rep,name=list,proto3" json:"list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RspUserList) Reset() {
+	*x = RspUserList{}
+	mi := &file_user_v1_user_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RspUserList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RspUserList) ProtoMessage() {}
+
+func (x *RspUserList) ProtoReflect() protoreflect.Message {
+	mi := &file_user_v1_user_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RspUserList.ProtoReflect.Descriptor instead.
+func (*RspUserList) Descriptor() ([]byte, []int) {
+	return file_user_v1_user_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *RspUserList) GetMeta() *v1.Reply {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *RspUserList) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *RspUserList) GetList() []*UserInfo {
+	if x != nil {
+		return x.List
 	}
 	return nil
 }
@@ -191,17 +708,62 @@ var File_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12user/v1/user.proto\x12\vapi.user.v1\x1a\x16common/v1/common.proto\"B\n" +
-	"\x04User\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
-	"\x06avatar\x18\x03 \x01(\tR\x06avatar\"U\n" +
-	"\x0eGetUserRequest\x123\n" +
+	"\x12user/v1/user.proto\x12\vapi.user.v1\x1a\x16common/v1/common.proto\"\x8c\x04\n" +
+	"\bUserInfo\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
+	"\tuser_code\x18\x02 \x01(\tR\buserCode\x12\x1b\n" +
+	"\tuser_name\x18\x03 \x01(\tR\buserName\x12\x1b\n" +
+	"\tuser_type\x18\x04 \x01(\tR\buserType\x12\x1b\n" +
+	"\treal_name\x18\x05 \x01(\tR\brealName\x12\x1b\n" +
+	"\tuser_desc\x18\x06 \x01(\tR\buserDesc\x12\x14\n" +
+	"\x05email\x18\a \x01(\tR\x05email\x12\x16\n" +
+	"\x06gender\x18\b \x01(\x05R\x06gender\x12\x10\n" +
+	"\x03tel\x18\t \x01(\tR\x03tel\x12\x16\n" +
+	"\x06mobile\x18\n" +
+	" \x01(\tR\x06mobile\x12\x1b\n" +
+	"\tdept_code\x18\v \x01(\tR\bdeptCode\x12\x16\n" +
+	"\x06avatar\x18\f \x01(\tR\x06avatar\x12!\n" +
+	"\favatar_thumb\x18\r \x01(\tR\vavatarThumb\x12\x1d\n" +
+	"\n" +
+	"is_account\x18\x0e \x01(\x05R\tisAccount\x12\x14\n" +
+	"\x05state\x18\x0f \x01(\x05R\x05state\x12\x1d\n" +
+	"\n" +
+	"created_by\x18\x10 \x01(\tR\tcreatedBy\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x11 \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_by\x18\x12 \x01(\tR\tupdatedBy\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x13 \x01(\tR\tupdatedAt\"K\n" +
+	"\bUserList\x12)\n" +
+	"\x04list\x18\x01 \x03(\v2\x15.api.user.v1.UserInfoR\x04list\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\"T\n" +
+	"\rReqUserDetail\x123\n" +
 	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\x03R\x02id\"b\n" +
-	"\x0fGetUserResponse\x12(\n" +
-	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12%\n" +
-	"\x04user\x18\x02 \x01(\v2\x11.api.user.v1.UserR\x04userB2Z0github.com/topcms/kratos-template/api/user/v1;v1b\x06proto3"
+	"\x02id\x18\x02 \x01(\x03R\x02id\"d\n" +
+	"\rRspUserDetail\x12(\n" +
+	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"o\n" +
+	"\rReqUserCreate\x123\n" +
+	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"d\n" +
+	"\rRspUserCreate\x12(\n" +
+	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"o\n" +
+	"\rReqUserUpdate\x123\n" +
+	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"d\n" +
+	"\rRspUserUpdate\x12(\n" +
+	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12)\n" +
+	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"j\n" +
+	"\vReqUserList\x123\n" +
+	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x03R\x04page\x12\x12\n" +
+	"\x04size\x18\x03 \x01(\x03R\x04size\"x\n" +
+	"\vRspUserList\x12(\n" +
+	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12)\n" +
+	"\x04list\x18\x03 \x03(\v2\x15.api.user.v1.UserInfoR\x04listB2Z0github.com/topcms/kratos-template/api/user/v1;v1b\x06proto3"
 
 var (
 	file_user_v1_user_proto_rawDescOnce sync.Once
@@ -215,23 +777,42 @@ func file_user_v1_user_proto_rawDescGZIP() []byte {
 	return file_user_v1_user_proto_rawDescData
 }
 
-var file_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_user_v1_user_proto_goTypes = []any{
-	(*User)(nil),            // 0: api.user.v1.User
-	(*GetUserRequest)(nil),  // 1: api.user.v1.GetUserRequest
-	(*GetUserResponse)(nil), // 2: api.user.v1.GetUserResponse
-	(*v1.Metadata)(nil),     // 3: api.common.v1.Metadata
-	(*v1.Reply)(nil),        // 4: api.common.v1.Reply
+	(*UserInfo)(nil),      // 0: api.user.v1.UserInfo
+	(*UserList)(nil),      // 1: api.user.v1.UserList
+	(*ReqUserDetail)(nil), // 2: api.user.v1.ReqUserDetail
+	(*RspUserDetail)(nil), // 3: api.user.v1.RspUserDetail
+	(*ReqUserCreate)(nil), // 4: api.user.v1.ReqUserCreate
+	(*RspUserCreate)(nil), // 5: api.user.v1.RspUserCreate
+	(*ReqUserUpdate)(nil), // 6: api.user.v1.ReqUserUpdate
+	(*RspUserUpdate)(nil), // 7: api.user.v1.RspUserUpdate
+	(*ReqUserList)(nil),   // 8: api.user.v1.ReqUserList
+	(*RspUserList)(nil),   // 9: api.user.v1.RspUserList
+	(*v1.Metadata)(nil),   // 10: api.common.v1.Metadata
+	(*v1.Reply)(nil),      // 11: api.common.v1.Reply
 }
 var file_user_v1_user_proto_depIdxs = []int32{
-	3, // 0: api.user.v1.GetUserRequest.metadata:type_name -> api.common.v1.Metadata
-	4, // 1: api.user.v1.GetUserResponse.meta:type_name -> api.common.v1.Reply
-	0, // 2: api.user.v1.GetUserResponse.user:type_name -> api.user.v1.User
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0,  // 0: api.user.v1.UserList.list:type_name -> api.user.v1.UserInfo
+	10, // 1: api.user.v1.ReqUserDetail.metadata:type_name -> api.common.v1.Metadata
+	11, // 2: api.user.v1.RspUserDetail.meta:type_name -> api.common.v1.Reply
+	0,  // 3: api.user.v1.RspUserDetail.user:type_name -> api.user.v1.UserInfo
+	10, // 4: api.user.v1.ReqUserCreate.metadata:type_name -> api.common.v1.Metadata
+	0,  // 5: api.user.v1.ReqUserCreate.user:type_name -> api.user.v1.UserInfo
+	11, // 6: api.user.v1.RspUserCreate.meta:type_name -> api.common.v1.Reply
+	0,  // 7: api.user.v1.RspUserCreate.user:type_name -> api.user.v1.UserInfo
+	10, // 8: api.user.v1.ReqUserUpdate.metadata:type_name -> api.common.v1.Metadata
+	0,  // 9: api.user.v1.ReqUserUpdate.user:type_name -> api.user.v1.UserInfo
+	11, // 10: api.user.v1.RspUserUpdate.meta:type_name -> api.common.v1.Reply
+	0,  // 11: api.user.v1.RspUserUpdate.user:type_name -> api.user.v1.UserInfo
+	10, // 12: api.user.v1.ReqUserList.metadata:type_name -> api.common.v1.Metadata
+	11, // 13: api.user.v1.RspUserList.meta:type_name -> api.common.v1.Reply
+	0,  // 14: api.user.v1.RspUserList.list:type_name -> api.user.v1.UserInfo
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_user_v1_user_proto_init() }
@@ -245,7 +826,7 @@ func file_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_v1_user_proto_rawDesc), len(file_user_v1_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
