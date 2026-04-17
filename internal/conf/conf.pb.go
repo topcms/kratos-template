@@ -29,6 +29,7 @@ type Bootstrap struct {
 	Data          *Data                  `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	Auth          *Auth                  `protobuf:"bytes,3,opt,name=auth,proto3" json:"auth,omitempty"`
 	Registry      *Registry              `protobuf:"bytes,4,opt,name=registry,proto3" json:"registry,omitempty"`
+	Log           *Log                   `protobuf:"bytes,5,opt,name=log,proto3" json:"log,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -87,6 +88,13 @@ func (x *Bootstrap) GetAuth() *Auth {
 func (x *Bootstrap) GetRegistry() *Registry {
 	if x != nil {
 		return x.Registry
+	}
+	return nil
+}
+
+func (x *Bootstrap) GetLog() *Log {
+	if x != nil {
+		return x.Log
 	}
 	return nil
 }
@@ -709,6 +717,104 @@ func (x *Auth) GetJwt() *JWT {
 	return nil
 }
 
+type Log struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// driver 当前只实现 zap，后续可扩展 slog/logrus
+	Driver string `protobuf:"bytes,1,opt,name=driver,proto3" json:"driver,omitempty"`
+	// level: debug/info/warn/error
+	Level string `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	// format: json/console
+	Format string `protobuf:"bytes,3,opt,name=format,proto3" json:"format,omitempty"`
+	// output: stdout/stderr
+	Output string `protobuf:"bytes,4,opt,name=output,proto3" json:"output,omitempty"`
+	Caller bool   `protobuf:"varint,5,opt,name=caller,proto3" json:"caller,omitempty"`
+	// mysql/redis 慢日志阈值
+	SlowThreshold *durationpb.Duration `protobuf:"bytes,6,opt,name=slow_threshold,json=slowThreshold,proto3" json:"slow_threshold,omitempty"`
+	// 是否忽略 gorm record not found 错误日志
+	IgnoreRecordNotFound bool `protobuf:"varint,7,opt,name=ignore_record_not_found,json=ignoreRecordNotFound,proto3" json:"ignore_record_not_found,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *Log) Reset() {
+	*x = Log{}
+	mi := &file_conf_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Log) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Log) ProtoMessage() {}
+
+func (x *Log) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Log.ProtoReflect.Descriptor instead.
+func (*Log) Descriptor() ([]byte, []int) {
+	return file_conf_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *Log) GetDriver() string {
+	if x != nil {
+		return x.Driver
+	}
+	return ""
+}
+
+func (x *Log) GetLevel() string {
+	if x != nil {
+		return x.Level
+	}
+	return ""
+}
+
+func (x *Log) GetFormat() string {
+	if x != nil {
+		return x.Format
+	}
+	return ""
+}
+
+func (x *Log) GetOutput() string {
+	if x != nil {
+		return x.Output
+	}
+	return ""
+}
+
+func (x *Log) GetCaller() bool {
+	if x != nil {
+		return x.Caller
+	}
+	return false
+}
+
+func (x *Log) GetSlowThreshold() *durationpb.Duration {
+	if x != nil {
+		return x.SlowThreshold
+	}
+	return nil
+}
+
+func (x *Log) GetIgnoreRecordNotFound() bool {
+	if x != nil {
+		return x.IgnoreRecordNotFound
+	}
+	return false
+}
+
 type Consul struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
@@ -721,7 +827,7 @@ type Consul struct {
 
 func (x *Consul) Reset() {
 	*x = Consul{}
-	mi := &file_conf_proto_msgTypes[11]
+	mi := &file_conf_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -733,7 +839,7 @@ func (x *Consul) String() string {
 func (*Consul) ProtoMessage() {}
 
 func (x *Consul) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_proto_msgTypes[11]
+	mi := &file_conf_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -746,7 +852,7 @@ func (x *Consul) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Consul.ProtoReflect.Descriptor instead.
 func (*Consul) Descriptor() ([]byte, []int) {
-	return file_conf_proto_rawDescGZIP(), []int{11}
+	return file_conf_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Consul) GetAddress() string {
@@ -787,7 +893,7 @@ type Registry struct {
 
 func (x *Registry) Reset() {
 	*x = Registry{}
-	mi := &file_conf_proto_msgTypes[12]
+	mi := &file_conf_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -799,7 +905,7 @@ func (x *Registry) String() string {
 func (*Registry) ProtoMessage() {}
 
 func (x *Registry) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_proto_msgTypes[12]
+	mi := &file_conf_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -812,7 +918,7 @@ func (x *Registry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Registry.ProtoReflect.Descriptor instead.
 func (*Registry) Descriptor() ([]byte, []int) {
-	return file_conf_proto_rawDescGZIP(), []int{12}
+	return file_conf_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Registry) GetType() string {
@@ -834,12 +940,13 @@ var File_conf_proto protoreflect.FileDescriptor
 const file_conf_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"conf.proto\x12\x12kratos.template.v1\x1a\x1egoogle/protobuf/duration.proto\"\xd5\x01\n" +
+	"conf.proto\x12\x12kratos.template.v1\x1a\x1egoogle/protobuf/duration.proto\"\x80\x02\n" +
 	"\tBootstrap\x122\n" +
 	"\x06server\x18\x01 \x01(\v2\x1a.kratos.template.v1.ServerR\x06server\x12,\n" +
 	"\x04data\x18\x02 \x01(\v2\x18.kratos.template.v1.DataR\x04data\x12,\n" +
 	"\x04auth\x18\x03 \x01(\v2\x18.kratos.template.v1.AuthR\x04auth\x128\n" +
-	"\bregistry\x18\x04 \x01(\v2\x1c.kratos.template.v1.RegistryR\bregistry\"i\n" +
+	"\bregistry\x18\x04 \x01(\v2\x1c.kratos.template.v1.RegistryR\bregistry\x12)\n" +
+	"\x03log\x18\x05 \x01(\v2\x17.kratos.template.v1.LogR\x03log\"i\n" +
 	"\x04HTTP\x12\x18\n" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x12\n" +
 	"\x04addr\x18\x02 \x01(\tR\x04addr\x123\n" +
@@ -881,7 +988,15 @@ const file_conf_proto_rawDesc = "" +
 	"\x06issuer\x18\x04 \x01(\tR\x06issuer\x12\x1a\n" +
 	"\baudience\x18\x05 \x03(\tR\baudience\"1\n" +
 	"\x04Auth\x12)\n" +
-	"\x03jwt\x18\x01 \x01(\v2\x17.kratos.template.v1.JWTR\x03jwt\"\x8a\x01\n" +
+	"\x03jwt\x18\x01 \x01(\v2\x17.kratos.template.v1.JWTR\x03jwt\"\xf4\x01\n" +
+	"\x03Log\x12\x16\n" +
+	"\x06driver\x18\x01 \x01(\tR\x06driver\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\tR\x05level\x12\x16\n" +
+	"\x06format\x18\x03 \x01(\tR\x06format\x12\x16\n" +
+	"\x06output\x18\x04 \x01(\tR\x06output\x12\x16\n" +
+	"\x06caller\x18\x05 \x01(\bR\x06caller\x12@\n" +
+	"\x0eslow_threshold\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\rslowThreshold\x125\n" +
+	"\x17ignore_record_not_found\x18\a \x01(\bR\x14ignoreRecordNotFound\"\x8a\x01\n" +
 	"\x06Consul\x12\x18\n" +
 	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x16\n" +
 	"\x06scheme\x18\x02 \x01(\tR\x06scheme\x12\x14\n" +
@@ -904,7 +1019,7 @@ func file_conf_proto_rawDescGZIP() []byte {
 	return file_conf_proto_rawDescData
 }
 
-var file_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_conf_proto_goTypes = []any{
 	(*Bootstrap)(nil),           // 0: kratos.template.v1.Bootstrap
 	(*HTTP)(nil),                // 1: kratos.template.v1.HTTP
@@ -917,36 +1032,39 @@ var file_conf_proto_goTypes = []any{
 	(*Data)(nil),                // 8: kratos.template.v1.Data
 	(*JWT)(nil),                 // 9: kratos.template.v1.JWT
 	(*Auth)(nil),                // 10: kratos.template.v1.Auth
-	(*Consul)(nil),              // 11: kratos.template.v1.Consul
-	(*Registry)(nil),            // 12: kratos.template.v1.Registry
-	(*durationpb.Duration)(nil), // 13: google.protobuf.Duration
+	(*Log)(nil),                 // 11: kratos.template.v1.Log
+	(*Consul)(nil),              // 12: kratos.template.v1.Consul
+	(*Registry)(nil),            // 13: kratos.template.v1.Registry
+	(*durationpb.Duration)(nil), // 14: google.protobuf.Duration
 }
 var file_conf_proto_depIdxs = []int32{
 	3,  // 0: kratos.template.v1.Bootstrap.server:type_name -> kratos.template.v1.Server
 	8,  // 1: kratos.template.v1.Bootstrap.data:type_name -> kratos.template.v1.Data
 	10, // 2: kratos.template.v1.Bootstrap.auth:type_name -> kratos.template.v1.Auth
-	12, // 3: kratos.template.v1.Bootstrap.registry:type_name -> kratos.template.v1.Registry
-	13, // 4: kratos.template.v1.HTTP.timeout:type_name -> google.protobuf.Duration
-	13, // 5: kratos.template.v1.GRPC.timeout:type_name -> google.protobuf.Duration
-	1,  // 6: kratos.template.v1.Server.http:type_name -> kratos.template.v1.HTTP
-	2,  // 7: kratos.template.v1.Server.grpc:type_name -> kratos.template.v1.GRPC
-	13, // 8: kratos.template.v1.Database.conn_max_lifetime:type_name -> google.protobuf.Duration
-	13, // 9: kratos.template.v1.Redis.dial_timeout:type_name -> google.protobuf.Duration
-	13, // 10: kratos.template.v1.Redis.read_timeout:type_name -> google.protobuf.Duration
-	13, // 11: kratos.template.v1.Redis.write_timeout:type_name -> google.protobuf.Duration
-	13, // 12: kratos.template.v1.RemoteUserService.dial_timeout:type_name -> google.protobuf.Duration
-	6,  // 13: kratos.template.v1.Remote.user_service:type_name -> kratos.template.v1.RemoteUserService
-	4,  // 14: kratos.template.v1.Data.database:type_name -> kratos.template.v1.Database
-	5,  // 15: kratos.template.v1.Data.redis:type_name -> kratos.template.v1.Redis
-	7,  // 16: kratos.template.v1.Data.remote:type_name -> kratos.template.v1.Remote
-	9,  // 17: kratos.template.v1.Auth.jwt:type_name -> kratos.template.v1.JWT
-	13, // 18: kratos.template.v1.Consul.wait_every:type_name -> google.protobuf.Duration
-	11, // 19: kratos.template.v1.Registry.consul:type_name -> kratos.template.v1.Consul
-	20, // [20:20] is the sub-list for method output_type
-	20, // [20:20] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	13, // 3: kratos.template.v1.Bootstrap.registry:type_name -> kratos.template.v1.Registry
+	11, // 4: kratos.template.v1.Bootstrap.log:type_name -> kratos.template.v1.Log
+	14, // 5: kratos.template.v1.HTTP.timeout:type_name -> google.protobuf.Duration
+	14, // 6: kratos.template.v1.GRPC.timeout:type_name -> google.protobuf.Duration
+	1,  // 7: kratos.template.v1.Server.http:type_name -> kratos.template.v1.HTTP
+	2,  // 8: kratos.template.v1.Server.grpc:type_name -> kratos.template.v1.GRPC
+	14, // 9: kratos.template.v1.Database.conn_max_lifetime:type_name -> google.protobuf.Duration
+	14, // 10: kratos.template.v1.Redis.dial_timeout:type_name -> google.protobuf.Duration
+	14, // 11: kratos.template.v1.Redis.read_timeout:type_name -> google.protobuf.Duration
+	14, // 12: kratos.template.v1.Redis.write_timeout:type_name -> google.protobuf.Duration
+	14, // 13: kratos.template.v1.RemoteUserService.dial_timeout:type_name -> google.protobuf.Duration
+	6,  // 14: kratos.template.v1.Remote.user_service:type_name -> kratos.template.v1.RemoteUserService
+	4,  // 15: kratos.template.v1.Data.database:type_name -> kratos.template.v1.Database
+	5,  // 16: kratos.template.v1.Data.redis:type_name -> kratos.template.v1.Redis
+	7,  // 17: kratos.template.v1.Data.remote:type_name -> kratos.template.v1.Remote
+	9,  // 18: kratos.template.v1.Auth.jwt:type_name -> kratos.template.v1.JWT
+	14, // 19: kratos.template.v1.Log.slow_threshold:type_name -> google.protobuf.Duration
+	14, // 20: kratos.template.v1.Consul.wait_every:type_name -> google.protobuf.Duration
+	12, // 21: kratos.template.v1.Registry.consul:type_name -> kratos.template.v1.Consul
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_conf_proto_init() }
@@ -960,7 +1078,7 @@ func file_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_proto_rawDesc), len(file_conf_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

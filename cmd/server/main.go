@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	kratoszap "github.com/go-kratos/kratos/contrib/log/zap/v2"
+	infralogger "github.com/topcms/kratos-infra/logger"
 	"github.com/topcms/kratos-template/internal/conf"
 
 	"github.com/go-kratos/kratos/v2"
@@ -14,7 +14,6 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"go.uber.org/zap"
 
 	_ "go.uber.org/automaxprocs"
 )
@@ -51,38 +50,44 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, registrar regis
 	return kratos.New(opts...)
 }
 
-func newZapLogger(runtimeEnv string) (log.Logger, func(), error) {
-	var zapCfg zap.Config
-	if runtimeEnv == "dev" {
-		zapCfg = zap.NewDevelopmentConfig() // console format
-	} else {
-		zapCfg = zap.NewProductionConfig() // json format
-	}
-	zl, err := zapCfg.Build()
-	if err != nil {
-		return nil, nil, err
-	}
-	cleanup := func() {
-		_ = zl.Sync()
+func buildLogConfig(runtimeEnv string, c *conf.Log) infralogger.Config {
+	cfg := infralogger.Config{
+		Driver: "zap",
+		Level:  "info",
+		Format: "json",
+		Output: "stdout",
+		Caller: true,
 	}
 
-	base := kratoszap.NewLogger(zl)
-	logger := log.With(base,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-	)
-	return logger, cleanup, nil
+	if c != nil {
+		if c.Driver != "" {
+			cfg.Driver = c.Driver
+		}
+		if c.Level != "" {
+			cfg.Level = c.Level
+		}
+		if c.Format != "" {
+			cfg.Format = c.Format
+		}
+		if c.Output != "" {
+			cfg.Output = c.Output
+		}
+		cfg.Caller = c.Caller
+	}
+
+	if runtimeEnv == "dev" {
+		if c == nil || c.Level == "" {
+			cfg.Level = "debug"
+		}
+		if c == nil || c.Format == "" {
+			cfg.Format = "console"
+		}
+	}
+	return cfg
 }
 
 func main() {
 	flag.Parse()
-	logger, loggerCleanup, err := newZapLogger(env)
-	if err != nil {
-		panic(err)
-	}
-	defer loggerCleanup()
-	log.SetLogger(logger)
 
 	c := config.New(
 		config.WithSource(
@@ -100,7 +105,22 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Registry, logger)
+	logger, loggerCleanup, err := infralogger.New(
+		buildLogConfig(env, bc.Log),
+		infralogger.ServiceMeta{
+			ID:      id,
+			Name:    Name,
+			Version: Version,
+			Env:     env,
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	defer loggerCleanup()
+	log.SetLogger(logger)
+
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Registry, bc.Log, logger)
 	if err != nil {
 		panic(err)
 	}

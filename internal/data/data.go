@@ -1,6 +1,8 @@
 package data
 
 import (
+	"time"
+
 	"github.com/topcms/kratos-template/internal/conf"
 	"github.com/topcms/kratos-template/internal/data/query"
 
@@ -25,14 +27,25 @@ type Data struct {
 }
 
 // NewData .
-func NewData(c *conf.Data) (*Data, func(), error) {
+func NewData(c *conf.Data, lc *conf.Log, baseLogger log.Logger) (*Data, func(), error) {
+	slowThreshold := 200 * time.Millisecond
+	ignoreRecordNotFound := true
+	if lc != nil {
+		if lc.SlowThreshold != nil {
+			slowThreshold = lc.SlowThreshold.AsDuration()
+		}
+		ignoreRecordNotFound = lc.IgnoreRecordNotFound
+	}
+
 	// 1) init mysql
 	db, err := infraMySQL.NewDB(infraMySQL.Config{
-		DSN:             c.Database.Source,
-		MaxIdleConns:    int(c.Database.MaxIdleConns),
-		MaxOpenConns:    int(c.Database.MaxOpenConns),
-		ConnMaxLifetime: c.Database.ConnMaxLifetime.AsDuration(),
-	})
+		DSN:                  c.Database.Source,
+		MaxIdleConns:         int(c.Database.MaxIdleConns),
+		MaxOpenConns:         int(c.Database.MaxOpenConns),
+		ConnMaxLifetime:      c.Database.ConnMaxLifetime.AsDuration(),
+		SlowThreshold:        slowThreshold,
+		IgnoreRecordNotFound: ignoreRecordNotFound,
+	}, baseLogger)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -44,7 +57,7 @@ func NewData(c *conf.Data) (*Data, func(), error) {
 		DialTimeout:  c.Redis.DialTimeout.AsDuration(),
 		ReadTimeout:  c.Redis.ReadTimeout.AsDuration(),
 		WriteTimeout: c.Redis.WriteTimeout.AsDuration(),
-	})
+	}, baseLogger)
 
 	d := &Data{
 		db:    db,

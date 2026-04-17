@@ -34,3 +34,17 @@ auth:
     issuer: "kratos-demo"
     audience:
       - "kratos-template"
+log:
+  # 当前实现：zap（后续可扩展 slog/logrus）
+  driver: zap
+  # debug / info / warn / error
+  level: info
+  # json / console
+  format: json
+  # stdout / stderr
+  output: stdout
+  caller: true
+  # mysql/redis 慢日志阈值
+  slow_threshold: 200ms
+  # 是否忽略 gorm record not found 错误日志
+  ignore_record_not_found: true
