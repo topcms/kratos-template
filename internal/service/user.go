@@ -4,20 +4,21 @@ import (
 	"context"
 	"time"
 
-	commonv1 "github.com/topcms/kratos-template/api/common/v1"
+	kerrors "github.com/go-kratos/kratos/v2/errors"
 	v1 "github.com/topcms/kratos-template/api/user/v1"
 	"github.com/topcms/kratos-template/internal/biz"
+	"github.com/topcms/kratos-template/internal/mapper"
 )
 
 // UserService 实现用户查询服务。
 type UserService struct {
 	v1.UnimplementedUserServiceServer
 
-	uc *biz.UserUsecase
+	uc *biz.UserUseCase
 }
 
 // NewUserService new a user service.
-func NewUserService(uc *biz.UserUsecase) *UserService {
+func NewUserService(uc *biz.UserUseCase) *UserService {
 	return &UserService{uc: uc}
 }
 
@@ -28,39 +29,75 @@ func (s *UserService) GetUser(ctx context.Context, in *v1.ReqUserDetail) (*v1.Rs
 		return nil, err
 	}
 	return &v1.RspUserDetail{
-		Meta: &commonv1.Reply{
-			Code:    0,
-			Message: "ok",
-		},
-		User: toProtoUserInfo(u),
+		User: mapper.ModelUserToProto(u),
 	}, nil
 }
 
 func (s *UserService) CreateUser(ctx context.Context, in *v1.ReqUserCreate) (*v1.RspUserCreate, error) {
-	created, err := s.uc.CreateUser(ctx, toBizUser(in.GetUser()))
+	created, err := s.uc.CreateUser(ctx, mapper.ProtoToModelUser(in.GetUser()))
 	if err != nil {
 		return nil, err
 	}
 	return &v1.RspUserCreate{
-		Meta: &commonv1.Reply{
-			Code:    0,
-			Message: "ok",
-		},
-		User: toProtoUserInfo(created),
+		User: mapper.ModelUserToProto(created),
 	}, nil
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, in *v1.ReqUserUpdate) (*v1.RspUserUpdate, error) {
-	updated, err := s.uc.UpdateUser(ctx, toBizUser(in.GetUser()))
+	fields := map[string]interface{}{
+		"updated_at": time.Now(),
+	}
+
+	if in.UserCode != nil {
+		fields["user_code"] = in.GetUserCode()
+	}
+	if in.UserName != nil {
+		fields["user_name"] = in.GetUserName()
+	}
+	if in.Avatar != nil {
+		fields["avatar"] = in.GetAvatar()
+	}
+	if in.Gender != nil {
+		fields["gender"] = in.GetGender()
+	}
+	if in.Introduction != nil {
+		fields["introduction"] = in.GetIntroduction()
+	}
+	if in.RegType != nil {
+		fields["reg_type"] = in.GetRegType()
+	}
+	if in.GetRegTime() != nil {
+		fields["reg_time"] = in.GetRegTime().AsTime()
+	}
+	if in.RegIp != nil {
+		fields["reg_ip"] = in.GetRegIp()
+	}
+	if in.Country != nil {
+		fields["country"] = in.GetCountry()
+	}
+	if in.Province != nil {
+		fields["province"] = in.GetProvince()
+	}
+	if in.City != nil {
+		fields["city"] = in.GetCity()
+	}
+	if in.Lang != nil {
+		fields["lang"] = in.GetLang()
+	}
+	if in.IsDel != nil {
+		fields["is_del"] = in.GetIsDel()
+	}
+
+	if len(fields) == 1 {
+		return nil, kerrors.BadRequest("INVALID_UPDATE_FIELDS", "no fields to update")
+	}
+
+	updated, err := s.uc.UpdateUser(ctx, in.GetUserId(), fields)
 	if err != nil {
 		return nil, err
 	}
 	return &v1.RspUserUpdate{
-		Meta: &commonv1.Reply{
-			Code:    0,
-			Message: "ok",
-		},
-		User: toProtoUserInfo(updated),
+		User: mapper.ModelUserToProto(updated),
 	}, nil
 }
 
@@ -71,75 +108,10 @@ func (s *UserService) ListUser(ctx context.Context, in *v1.ReqUserList) (*v1.Rsp
 	}
 	list := make([]*v1.UserInfo, 0, len(users))
 	for _, item := range users {
-		list = append(list, toProtoUserInfo(item))
+		list = append(list, mapper.ModelUserToProto(item))
 	}
 	return &v1.RspUserList{
-		Meta: &commonv1.Reply{
-			Code:    0,
-			Message: "ok",
-		},
 		Total: total,
 		List:  list,
 	}, nil
-}
-
-func toProtoUserInfo(u *biz.User) *v1.UserInfo {
-	if u == nil {
-		return nil
-	}
-	return &v1.UserInfo{
-		Id:          u.ID,
-		UserCode:    u.UserCode,
-		UserName:    u.UserName,
-		UserType:    u.UserType,
-		RealName:    u.RealName,
-		UserDesc:    u.UserDesc,
-		Email:       u.Email,
-		Gender:      u.Gender,
-		Tel:         u.Tel,
-		Mobile:      u.Mobile,
-		DeptCode:    u.DeptCode,
-		Avatar:      u.Avatar,
-		AvatarThumb: u.AvatarThumb,
-		IsAccount:   u.IsAccount,
-		State:       u.State,
-		CreatedBy:   u.CreatedBy,
-		CreatedAt:   defaultNow(u.CreatedAt),
-		UpdatedBy:   u.UpdatedBy,
-		UpdatedAt:   defaultNow(u.UpdatedAt),
-	}
-}
-
-func toBizUser(u *v1.UserInfo) *biz.User {
-	if u == nil {
-		return nil
-	}
-	return &biz.User{
-		ID:          u.Id,
-		UserCode:    u.UserCode,
-		UserName:    u.UserName,
-		UserType:    u.UserType,
-		RealName:    u.RealName,
-		UserDesc:    u.UserDesc,
-		Email:       u.Email,
-		Gender:      u.Gender,
-		Tel:         u.Tel,
-		Mobile:      u.Mobile,
-		DeptCode:    u.DeptCode,
-		Avatar:      u.Avatar,
-		AvatarThumb: u.AvatarThumb,
-		IsAccount:   u.IsAccount,
-		State:       u.State,
-		CreatedBy:   u.CreatedBy,
-		CreatedAt:   u.CreatedAt,
-		UpdatedBy:   u.UpdatedBy,
-		UpdatedAt:   u.UpdatedAt,
-	}
-}
-
-func defaultNow(v string) string {
-	if v != "" {
-		return v
-	}
-	return time.Now().Format(time.RFC3339)
 }

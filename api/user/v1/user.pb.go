@@ -7,9 +7,9 @@
 package v1
 
 import (
-	v1 "github.com/topcms/kratos-template/api/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -25,25 +25,22 @@ const (
 // UserInfo 为用户信息实体。
 type UserInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	UserCode      string                 `protobuf:"bytes,2,opt,name=user_code,json=userCode,proto3" json:"user_code,omitempty"`
 	UserName      string                 `protobuf:"bytes,3,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
-	UserType      string                 `protobuf:"bytes,4,opt,name=user_type,json=userType,proto3" json:"user_type,omitempty"`
-	RealName      string                 `protobuf:"bytes,5,opt,name=real_name,json=realName,proto3" json:"real_name,omitempty"`
-	UserDesc      string                 `protobuf:"bytes,6,opt,name=user_desc,json=userDesc,proto3" json:"user_desc,omitempty"`
-	Email         string                 `protobuf:"bytes,7,opt,name=email,proto3" json:"email,omitempty"`
-	Gender        int32                  `protobuf:"varint,8,opt,name=gender,proto3" json:"gender,omitempty"`
-	Tel           string                 `protobuf:"bytes,9,opt,name=tel,proto3" json:"tel,omitempty"`
-	Mobile        string                 `protobuf:"bytes,10,opt,name=mobile,proto3" json:"mobile,omitempty"`
-	DeptCode      string                 `protobuf:"bytes,11,opt,name=dept_code,json=deptCode,proto3" json:"dept_code,omitempty"`
-	Avatar        string                 `protobuf:"bytes,12,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	AvatarThumb   string                 `protobuf:"bytes,13,opt,name=avatar_thumb,json=avatarThumb,proto3" json:"avatar_thumb,omitempty"`
-	IsAccount     int32                  `protobuf:"varint,14,opt,name=is_account,json=isAccount,proto3" json:"is_account,omitempty"`
-	State         int32                  `protobuf:"varint,15,opt,name=state,proto3" json:"state,omitempty"`
-	CreatedBy     string                 `protobuf:"bytes,16,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
-	CreatedAt     string                 `protobuf:"bytes,17,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedBy     string                 `protobuf:"bytes,18,opt,name=updated_by,json=updatedBy,proto3" json:"updated_by,omitempty"`
-	UpdatedAt     string                 `protobuf:"bytes,19,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Avatar        string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	Gender        int32                  `protobuf:"varint,5,opt,name=gender,proto3" json:"gender,omitempty"`
+	Introduction  string                 `protobuf:"bytes,6,opt,name=introduction,proto3" json:"introduction,omitempty"`
+	RegType       int32                  `protobuf:"varint,7,opt,name=reg_type,json=regType,proto3" json:"reg_type,omitempty"`
+	RegTime       *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=reg_time,json=regTime,proto3" json:"reg_time,omitempty"`
+	RegIp         int32                  `protobuf:"varint,9,opt,name=reg_ip,json=regIp,proto3" json:"reg_ip,omitempty"`
+	Country       string                 `protobuf:"bytes,10,opt,name=country,proto3" json:"country,omitempty"`
+	Province      string                 `protobuf:"bytes,11,opt,name=province,proto3" json:"province,omitempty"`
+	City          string                 `protobuf:"bytes,12,opt,name=city,proto3" json:"city,omitempty"`
+	Lang          string                 `protobuf:"bytes,13,opt,name=lang,proto3" json:"lang,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	IsDel         int32                  `protobuf:"varint,16,opt,name=is_del,json=isDel,proto3" json:"is_del,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -78,9 +75,9 @@ func (*UserInfo) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserInfo) GetId() int64 {
+func (x *UserInfo) GetUserId() int64 {
 	if x != nil {
-		return x.Id
+		return x.UserId
 	}
 	return 0
 }
@@ -99,30 +96,9 @@ func (x *UserInfo) GetUserName() string {
 	return ""
 }
 
-func (x *UserInfo) GetUserType() string {
+func (x *UserInfo) GetAvatar() string {
 	if x != nil {
-		return x.UserType
-	}
-	return ""
-}
-
-func (x *UserInfo) GetRealName() string {
-	if x != nil {
-		return x.RealName
-	}
-	return ""
-}
-
-func (x *UserInfo) GetUserDesc() string {
-	if x != nil {
-		return x.UserDesc
-	}
-	return ""
-}
-
-func (x *UserInfo) GetEmail() string {
-	if x != nil {
-		return x.Email
+		return x.Avatar
 	}
 	return ""
 }
@@ -134,81 +110,81 @@ func (x *UserInfo) GetGender() int32 {
 	return 0
 }
 
-func (x *UserInfo) GetTel() string {
+func (x *UserInfo) GetIntroduction() string {
 	if x != nil {
-		return x.Tel
+		return x.Introduction
 	}
 	return ""
 }
 
-func (x *UserInfo) GetMobile() string {
+func (x *UserInfo) GetRegType() int32 {
 	if x != nil {
-		return x.Mobile
-	}
-	return ""
-}
-
-func (x *UserInfo) GetDeptCode() string {
-	if x != nil {
-		return x.DeptCode
-	}
-	return ""
-}
-
-func (x *UserInfo) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *UserInfo) GetAvatarThumb() string {
-	if x != nil {
-		return x.AvatarThumb
-	}
-	return ""
-}
-
-func (x *UserInfo) GetIsAccount() int32 {
-	if x != nil {
-		return x.IsAccount
+		return x.RegType
 	}
 	return 0
 }
 
-func (x *UserInfo) GetState() int32 {
+func (x *UserInfo) GetRegTime() *timestamppb.Timestamp {
 	if x != nil {
-		return x.State
+		return x.RegTime
+	}
+	return nil
+}
+
+func (x *UserInfo) GetRegIp() int32 {
+	if x != nil {
+		return x.RegIp
 	}
 	return 0
 }
 
-func (x *UserInfo) GetCreatedBy() string {
+func (x *UserInfo) GetCountry() string {
 	if x != nil {
-		return x.CreatedBy
+		return x.Country
 	}
 	return ""
 }
 
-func (x *UserInfo) GetCreatedAt() string {
+func (x *UserInfo) GetProvince() string {
+	if x != nil {
+		return x.Province
+	}
+	return ""
+}
+
+func (x *UserInfo) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *UserInfo) GetLang() string {
+	if x != nil {
+		return x.Lang
+	}
+	return ""
+}
+
+func (x *UserInfo) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
-	return ""
+	return nil
 }
 
-func (x *UserInfo) GetUpdatedBy() string {
-	if x != nil {
-		return x.UpdatedBy
-	}
-	return ""
-}
-
-func (x *UserInfo) GetUpdatedAt() string {
+func (x *UserInfo) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
-	return ""
+	return nil
+}
+
+func (x *UserInfo) GetIsDel() int32 {
+	if x != nil {
+		return x.IsDel
+	}
+	return 0
 }
 
 // UserList 为用户列表数据结构。
@@ -267,8 +243,7 @@ func (x *UserList) GetTotal() int64 {
 // ReqUserDetail 单个用户查询请求。
 type ReqUserDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Id            int64                  `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -303,13 +278,6 @@ func (*ReqUserDetail) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ReqUserDetail) GetMetadata() *v1.Metadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
 func (x *ReqUserDetail) GetId() int64 {
 	if x != nil {
 		return x.Id
@@ -320,8 +288,7 @@ func (x *ReqUserDetail) GetId() int64 {
 // RspUserDetail 单个用户查询响应。
 type RspUserDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
-	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -356,13 +323,6 @@ func (*RspUserDetail) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *RspUserDetail) GetMeta() *v1.Reply {
-	if x != nil {
-		return x.Meta
-	}
-	return nil
-}
-
 func (x *RspUserDetail) GetUser() *UserInfo {
 	if x != nil {
 		return x.User
@@ -373,8 +333,7 @@ func (x *RspUserDetail) GetUser() *UserInfo {
 // ReqUserCreate 用户新增请求。
 type ReqUserCreate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -409,13 +368,6 @@ func (*ReqUserCreate) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ReqUserCreate) GetMetadata() *v1.Metadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
 func (x *ReqUserCreate) GetUser() *UserInfo {
 	if x != nil {
 		return x.User
@@ -426,8 +378,7 @@ func (x *ReqUserCreate) GetUser() *UserInfo {
 // RspUserCreate 用户新增响应。
 type RspUserCreate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
-	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -462,13 +413,6 @@ func (*RspUserCreate) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *RspUserCreate) GetMeta() *v1.Reply {
-	if x != nil {
-		return x.Meta
-	}
-	return nil
-}
-
 func (x *RspUserCreate) GetUser() *UserInfo {
 	if x != nil {
 		return x.User
@@ -479,8 +423,20 @@ func (x *RspUserCreate) GetUser() *UserInfo {
 // ReqUserUpdate 用户更新请求。
 type ReqUserUpdate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserCode      *string                `protobuf:"bytes,2,opt,name=user_code,json=userCode,proto3,oneof" json:"user_code,omitempty"`
+	UserName      *string                `protobuf:"bytes,3,opt,name=user_name,json=userName,proto3,oneof" json:"user_name,omitempty"`
+	Avatar        *string                `protobuf:"bytes,4,opt,name=avatar,proto3,oneof" json:"avatar,omitempty"`
+	Gender        *int32                 `protobuf:"varint,5,opt,name=gender,proto3,oneof" json:"gender,omitempty"`
+	Introduction  *string                `protobuf:"bytes,6,opt,name=introduction,proto3,oneof" json:"introduction,omitempty"`
+	RegType       *int32                 `protobuf:"varint,7,opt,name=reg_type,json=regType,proto3,oneof" json:"reg_type,omitempty"`
+	RegTime       *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=reg_time,json=regTime,proto3" json:"reg_time,omitempty"`
+	RegIp         *int32                 `protobuf:"varint,9,opt,name=reg_ip,json=regIp,proto3,oneof" json:"reg_ip,omitempty"`
+	Country       *string                `protobuf:"bytes,10,opt,name=country,proto3,oneof" json:"country,omitempty"`
+	Province      *string                `protobuf:"bytes,11,opt,name=province,proto3,oneof" json:"province,omitempty"`
+	City          *string                `protobuf:"bytes,12,opt,name=city,proto3,oneof" json:"city,omitempty"`
+	Lang          *string                `protobuf:"bytes,13,opt,name=lang,proto3,oneof" json:"lang,omitempty"`
+	IsDel         *int32                 `protobuf:"varint,14,opt,name=is_del,json=isDel,proto3,oneof" json:"is_del,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -515,25 +471,108 @@ func (*ReqUserUpdate) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *ReqUserUpdate) GetMetadata() *v1.Metadata {
+func (x *ReqUserUpdate) GetUserId() int64 {
 	if x != nil {
-		return x.Metadata
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ReqUserUpdate) GetUserCode() string {
+	if x != nil && x.UserCode != nil {
+		return *x.UserCode
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetUserName() string {
+	if x != nil && x.UserName != nil {
+		return *x.UserName
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetAvatar() string {
+	if x != nil && x.Avatar != nil {
+		return *x.Avatar
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetGender() int32 {
+	if x != nil && x.Gender != nil {
+		return *x.Gender
+	}
+	return 0
+}
+
+func (x *ReqUserUpdate) GetIntroduction() string {
+	if x != nil && x.Introduction != nil {
+		return *x.Introduction
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetRegType() int32 {
+	if x != nil && x.RegType != nil {
+		return *x.RegType
+	}
+	return 0
+}
+
+func (x *ReqUserUpdate) GetRegTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.RegTime
 	}
 	return nil
 }
 
-func (x *ReqUserUpdate) GetUser() *UserInfo {
-	if x != nil {
-		return x.User
+func (x *ReqUserUpdate) GetRegIp() int32 {
+	if x != nil && x.RegIp != nil {
+		return *x.RegIp
 	}
-	return nil
+	return 0
+}
+
+func (x *ReqUserUpdate) GetCountry() string {
+	if x != nil && x.Country != nil {
+		return *x.Country
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetProvince() string {
+	if x != nil && x.Province != nil {
+		return *x.Province
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetCity() string {
+	if x != nil && x.City != nil {
+		return *x.City
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetLang() string {
+	if x != nil && x.Lang != nil {
+		return *x.Lang
+	}
+	return ""
+}
+
+func (x *ReqUserUpdate) GetIsDel() int32 {
+	if x != nil && x.IsDel != nil {
+		return *x.IsDel
+	}
+	return 0
 }
 
 // RspUserUpdate 用户更新响应。
 type RspUserUpdate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
-	User          *UserInfo              `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	User          *UserInfo              `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -568,13 +607,6 @@ func (*RspUserUpdate) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *RspUserUpdate) GetMeta() *v1.Reply {
-	if x != nil {
-		return x.Meta
-	}
-	return nil
-}
-
 func (x *RspUserUpdate) GetUser() *UserInfo {
 	if x != nil {
 		return x.User
@@ -585,9 +617,8 @@ func (x *RspUserUpdate) GetUser() *UserInfo {
 // ReqUserList 用户列表查询请求。
 type ReqUserList struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.Metadata           `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Page          int64                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
-	Size          int64                  `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
+	Page          int64                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Size          int64                  `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -622,13 +653,6 @@ func (*ReqUserList) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ReqUserList) GetMetadata() *v1.Metadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
 func (x *ReqUserList) GetPage() int64 {
 	if x != nil {
 		return x.Page
@@ -646,9 +670,8 @@ func (x *ReqUserList) GetSize() int64 {
 // RspUserList 用户列表查询响应。
 type RspUserList struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Meta          *v1.Reply              `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
-	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	List          []*UserInfo            `protobuf:"bytes,3,rep,name=list,proto3" json:"list,omitempty"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	List          []*UserInfo            `protobuf:"bytes,2,rep,name=list,proto3" json:"list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -683,13 +706,6 @@ func (*RspUserList) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *RspUserList) GetMeta() *v1.Reply {
-	if x != nil {
-		return x.Meta
-	}
-	return nil
-}
-
 func (x *RspUserList) GetTotal() int64 {
 	if x != nil {
 		return x.Total
@@ -708,62 +724,78 @@ var File_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12user/v1/user.proto\x12\vapi.user.v1\x1a\x16common/v1/common.proto\"\x8c\x04\n" +
-	"\bUserInfo\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
+	"\x12user/v1/user.proto\x12\vapi.user.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x85\x04\n" +
+	"\bUserInfo\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1b\n" +
 	"\tuser_code\x18\x02 \x01(\tR\buserCode\x12\x1b\n" +
-	"\tuser_name\x18\x03 \x01(\tR\buserName\x12\x1b\n" +
-	"\tuser_type\x18\x04 \x01(\tR\buserType\x12\x1b\n" +
-	"\treal_name\x18\x05 \x01(\tR\brealName\x12\x1b\n" +
-	"\tuser_desc\x18\x06 \x01(\tR\buserDesc\x12\x14\n" +
-	"\x05email\x18\a \x01(\tR\x05email\x12\x16\n" +
-	"\x06gender\x18\b \x01(\x05R\x06gender\x12\x10\n" +
-	"\x03tel\x18\t \x01(\tR\x03tel\x12\x16\n" +
-	"\x06mobile\x18\n" +
-	" \x01(\tR\x06mobile\x12\x1b\n" +
-	"\tdept_code\x18\v \x01(\tR\bdeptCode\x12\x16\n" +
-	"\x06avatar\x18\f \x01(\tR\x06avatar\x12!\n" +
-	"\favatar_thumb\x18\r \x01(\tR\vavatarThumb\x12\x1d\n" +
+	"\tuser_name\x18\x03 \x01(\tR\buserName\x12\x16\n" +
+	"\x06avatar\x18\x04 \x01(\tR\x06avatar\x12\x16\n" +
+	"\x06gender\x18\x05 \x01(\x05R\x06gender\x12\"\n" +
+	"\fintroduction\x18\x06 \x01(\tR\fintroduction\x12\x19\n" +
+	"\breg_type\x18\a \x01(\x05R\aregType\x125\n" +
+	"\breg_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\aregTime\x12\x15\n" +
+	"\x06reg_ip\x18\t \x01(\x05R\x05regIp\x12\x18\n" +
+	"\acountry\x18\n" +
+	" \x01(\tR\acountry\x12\x1a\n" +
+	"\bprovince\x18\v \x01(\tR\bprovince\x12\x12\n" +
+	"\x04city\x18\f \x01(\tR\x04city\x12\x12\n" +
+	"\x04lang\x18\r \x01(\tR\x04lang\x129\n" +
 	"\n" +
-	"is_account\x18\x0e \x01(\x05R\tisAccount\x12\x14\n" +
-	"\x05state\x18\x0f \x01(\x05R\x05state\x12\x1d\n" +
+	"created_at\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"created_by\x18\x10 \x01(\tR\tcreatedBy\x12\x1d\n" +
-	"\n" +
-	"created_at\x18\x11 \x01(\tR\tcreatedAt\x12\x1d\n" +
-	"\n" +
-	"updated_by\x18\x12 \x01(\tR\tupdatedBy\x12\x1d\n" +
-	"\n" +
-	"updated_at\x18\x13 \x01(\tR\tupdatedAt\"K\n" +
+	"updated_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x15\n" +
+	"\x06is_del\x18\x10 \x01(\x05R\x05isDel\"K\n" +
 	"\bUserList\x12)\n" +
 	"\x04list\x18\x01 \x03(\v2\x15.api.user.v1.UserInfoR\x04list\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x03R\x05total\"T\n" +
-	"\rReqUserDetail\x123\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\x03R\x02id\"d\n" +
-	"\rRspUserDetail\x12(\n" +
-	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12)\n" +
-	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"o\n" +
-	"\rReqUserCreate\x123\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12)\n" +
-	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"d\n" +
-	"\rRspUserCreate\x12(\n" +
-	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12)\n" +
-	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"o\n" +
-	"\rReqUserUpdate\x123\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12)\n" +
-	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"d\n" +
-	"\rRspUserUpdate\x12(\n" +
-	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12)\n" +
-	"\x04user\x18\x02 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"j\n" +
-	"\vReqUserList\x123\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x17.api.common.v1.MetadataR\bmetadata\x12\x12\n" +
-	"\x04page\x18\x02 \x01(\x03R\x04page\x12\x12\n" +
-	"\x04size\x18\x03 \x01(\x03R\x04size\"x\n" +
-	"\vRspUserList\x12(\n" +
-	"\x04meta\x18\x01 \x01(\v2\x14.api.common.v1.ReplyR\x04meta\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x03R\x05total\x12)\n" +
-	"\x04list\x18\x03 \x03(\v2\x15.api.user.v1.UserInfoR\x04listB2Z0github.com/topcms/kratos-template/api/user/v1;v1b\x06proto3"
+	"\x05total\x18\x02 \x01(\x03R\x05total\"\x1f\n" +
+	"\rReqUserDetail\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\":\n" +
+	"\rRspUserDetail\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\":\n" +
+	"\rReqUserCreate\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\":\n" +
+	"\rRspUserCreate\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"\xe1\x04\n" +
+	"\rReqUserUpdate\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12 \n" +
+	"\tuser_code\x18\x02 \x01(\tH\x00R\buserCode\x88\x01\x01\x12 \n" +
+	"\tuser_name\x18\x03 \x01(\tH\x01R\buserName\x88\x01\x01\x12\x1b\n" +
+	"\x06avatar\x18\x04 \x01(\tH\x02R\x06avatar\x88\x01\x01\x12\x1b\n" +
+	"\x06gender\x18\x05 \x01(\x05H\x03R\x06gender\x88\x01\x01\x12'\n" +
+	"\fintroduction\x18\x06 \x01(\tH\x04R\fintroduction\x88\x01\x01\x12\x1e\n" +
+	"\breg_type\x18\a \x01(\x05H\x05R\aregType\x88\x01\x01\x125\n" +
+	"\breg_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\aregTime\x12\x1a\n" +
+	"\x06reg_ip\x18\t \x01(\x05H\x06R\x05regIp\x88\x01\x01\x12\x1d\n" +
+	"\acountry\x18\n" +
+	" \x01(\tH\aR\acountry\x88\x01\x01\x12\x1f\n" +
+	"\bprovince\x18\v \x01(\tH\bR\bprovince\x88\x01\x01\x12\x17\n" +
+	"\x04city\x18\f \x01(\tH\tR\x04city\x88\x01\x01\x12\x17\n" +
+	"\x04lang\x18\r \x01(\tH\n" +
+	"R\x04lang\x88\x01\x01\x12\x1a\n" +
+	"\x06is_del\x18\x0e \x01(\x05H\vR\x05isDel\x88\x01\x01B\f\n" +
+	"\n" +
+	"_user_codeB\f\n" +
+	"\n" +
+	"_user_nameB\t\n" +
+	"\a_avatarB\t\n" +
+	"\a_genderB\x0f\n" +
+	"\r_introductionB\v\n" +
+	"\t_reg_typeB\t\n" +
+	"\a_reg_ipB\n" +
+	"\n" +
+	"\b_countryB\v\n" +
+	"\t_provinceB\a\n" +
+	"\x05_cityB\a\n" +
+	"\x05_langB\t\n" +
+	"\a_is_del\":\n" +
+	"\rRspUserUpdate\x12)\n" +
+	"\x04user\x18\x01 \x01(\v2\x15.api.user.v1.UserInfoR\x04user\"5\n" +
+	"\vReqUserList\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x03R\x04page\x12\x12\n" +
+	"\x04size\x18\x02 \x01(\x03R\x04size\"N\n" +
+	"\vRspUserList\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\x12)\n" +
+	"\x04list\x18\x02 \x03(\v2\x15.api.user.v1.UserInfoR\x04listB2Z0github.com/topcms/kratos-template/api/user/v1;v1b\x06proto3"
 
 var (
 	file_user_v1_user_proto_rawDescOnce sync.Once
@@ -779,40 +811,34 @@ func file_user_v1_user_proto_rawDescGZIP() []byte {
 
 var file_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_user_v1_user_proto_goTypes = []any{
-	(*UserInfo)(nil),      // 0: api.user.v1.UserInfo
-	(*UserList)(nil),      // 1: api.user.v1.UserList
-	(*ReqUserDetail)(nil), // 2: api.user.v1.ReqUserDetail
-	(*RspUserDetail)(nil), // 3: api.user.v1.RspUserDetail
-	(*ReqUserCreate)(nil), // 4: api.user.v1.ReqUserCreate
-	(*RspUserCreate)(nil), // 5: api.user.v1.RspUserCreate
-	(*ReqUserUpdate)(nil), // 6: api.user.v1.ReqUserUpdate
-	(*RspUserUpdate)(nil), // 7: api.user.v1.RspUserUpdate
-	(*ReqUserList)(nil),   // 8: api.user.v1.ReqUserList
-	(*RspUserList)(nil),   // 9: api.user.v1.RspUserList
-	(*v1.Metadata)(nil),   // 10: api.common.v1.Metadata
-	(*v1.Reply)(nil),      // 11: api.common.v1.Reply
+	(*UserInfo)(nil),              // 0: api.user.v1.UserInfo
+	(*UserList)(nil),              // 1: api.user.v1.UserList
+	(*ReqUserDetail)(nil),         // 2: api.user.v1.ReqUserDetail
+	(*RspUserDetail)(nil),         // 3: api.user.v1.RspUserDetail
+	(*ReqUserCreate)(nil),         // 4: api.user.v1.ReqUserCreate
+	(*RspUserCreate)(nil),         // 5: api.user.v1.RspUserCreate
+	(*ReqUserUpdate)(nil),         // 6: api.user.v1.ReqUserUpdate
+	(*RspUserUpdate)(nil),         // 7: api.user.v1.RspUserUpdate
+	(*ReqUserList)(nil),           // 8: api.user.v1.ReqUserList
+	(*RspUserList)(nil),           // 9: api.user.v1.RspUserList
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_user_v1_user_proto_depIdxs = []int32{
-	0,  // 0: api.user.v1.UserList.list:type_name -> api.user.v1.UserInfo
-	10, // 1: api.user.v1.ReqUserDetail.metadata:type_name -> api.common.v1.Metadata
-	11, // 2: api.user.v1.RspUserDetail.meta:type_name -> api.common.v1.Reply
-	0,  // 3: api.user.v1.RspUserDetail.user:type_name -> api.user.v1.UserInfo
-	10, // 4: api.user.v1.ReqUserCreate.metadata:type_name -> api.common.v1.Metadata
+	10, // 0: api.user.v1.UserInfo.reg_time:type_name -> google.protobuf.Timestamp
+	10, // 1: api.user.v1.UserInfo.created_at:type_name -> google.protobuf.Timestamp
+	10, // 2: api.user.v1.UserInfo.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 3: api.user.v1.UserList.list:type_name -> api.user.v1.UserInfo
+	0,  // 4: api.user.v1.RspUserDetail.user:type_name -> api.user.v1.UserInfo
 	0,  // 5: api.user.v1.ReqUserCreate.user:type_name -> api.user.v1.UserInfo
-	11, // 6: api.user.v1.RspUserCreate.meta:type_name -> api.common.v1.Reply
-	0,  // 7: api.user.v1.RspUserCreate.user:type_name -> api.user.v1.UserInfo
-	10, // 8: api.user.v1.ReqUserUpdate.metadata:type_name -> api.common.v1.Metadata
-	0,  // 9: api.user.v1.ReqUserUpdate.user:type_name -> api.user.v1.UserInfo
-	11, // 10: api.user.v1.RspUserUpdate.meta:type_name -> api.common.v1.Reply
-	0,  // 11: api.user.v1.RspUserUpdate.user:type_name -> api.user.v1.UserInfo
-	10, // 12: api.user.v1.ReqUserList.metadata:type_name -> api.common.v1.Metadata
-	11, // 13: api.user.v1.RspUserList.meta:type_name -> api.common.v1.Reply
-	0,  // 14: api.user.v1.RspUserList.list:type_name -> api.user.v1.UserInfo
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	0,  // 6: api.user.v1.RspUserCreate.user:type_name -> api.user.v1.UserInfo
+	10, // 7: api.user.v1.ReqUserUpdate.reg_time:type_name -> google.protobuf.Timestamp
+	0,  // 8: api.user.v1.RspUserUpdate.user:type_name -> api.user.v1.UserInfo
+	0,  // 9: api.user.v1.RspUserList.list:type_name -> api.user.v1.UserInfo
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_user_v1_user_proto_init() }
@@ -820,6 +846,7 @@ func file_user_v1_user_proto_init() {
 	if File_user_v1_user_proto != nil {
 		return
 	}
+	file_user_v1_user_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -30,6 +30,8 @@ func NewHTTPServer(c *conf.Server, user *service.UserService, logger log.Logger,
 		http.Middleware(
 			mids...,
 		),
+		http.ResponseEncoder(encodeHTTPResponse),
+		http.ErrorEncoder(encodeHTTPError),
 	}
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))

@@ -5,55 +5,33 @@ import (
 	"fmt"
 
 	kerrors "github.com/go-kratos/kratos/v2/errors"
+	"github.com/topcms/kratos-template/internal/data/model"
 )
-
-// User 用户领域模型。
-type User struct {
-	ID          int64
-	UserCode    string
-	UserName    string
-	UserType    string
-	RealName    string
-	UserDesc    string
-	Email       string
-	Gender      int32
-	Tel         string
-	Mobile      string
-	DeptCode    string
-	Avatar      string
-	AvatarThumb string
-	IsAccount   int32
-	State       int32
-	CreatedBy   string
-	CreatedAt   string
-	UpdatedBy   string
-	UpdatedAt   string
-}
 
 // UserRepo 仓储接口（由 data 实现）。
 type UserRepo interface {
-	FindByID(context.Context, int64) (*User, error)
-	Create(context.Context, *User) (*User, error)
-	Update(context.Context, *User) (*User, error)
-	List(context.Context, int64, int64) ([]*User, int64, error)
+	Get(context.Context, int64) (*model.User, error)
+	Create(context.Context, *model.User) (*model.User, error)
+	Update(context.Context, int64, map[string]interface{}) (*model.User, error)
+	List(context.Context, int64, int64) ([]*model.User, int64, error)
 }
 
-// UserUsecase 用户用例层。
-type UserUsecase struct {
+// UserUseCase 用户用例层。
+type UserUseCase struct {
 	repo UserRepo
 }
 
-// NewUserUsecase new a User usecase.
-func NewUserUsecase(repo UserRepo) *UserUsecase {
-	return &UserUsecase{repo: repo}
+// NewUserUseCase new a User use case.
+func NewUserUseCase(repo UserRepo) *UserUseCase {
+	return &UserUseCase{repo: repo}
 }
 
 // GetUser 根据 ID 查询用户。
-func (uc *UserUsecase) GetUser(ctx context.Context, id int64) (*User, error) {
+func (uc *UserUseCase) GetUser(ctx context.Context, id int64) (*model.User, error) {
 	if id <= 0 {
 		return nil, kerrors.BadRequest("INVALID_USER_ID", "user id must be greater than 0")
 	}
-	u, err := uc.repo.FindByID(ctx, id)
+	u, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +41,7 @@ func (uc *UserUsecase) GetUser(ctx context.Context, id int64) (*User, error) {
 	return u, nil
 }
 
-func (uc *UserUsecase) CreateUser(ctx context.Context, user *User) (*User, error) {
+func (uc *UserUseCase) CreateUser(ctx context.Context, user *model.User) (*model.User, error) {
 	if user == nil {
 		return nil, kerrors.BadRequest("INVALID_USER", "user is required")
 	}
@@ -73,17 +51,17 @@ func (uc *UserUsecase) CreateUser(ctx context.Context, user *User) (*User, error
 	return uc.repo.Create(ctx, user)
 }
 
-func (uc *UserUsecase) UpdateUser(ctx context.Context, user *User) (*User, error) {
-	if user == nil {
+func (uc *UserUseCase) UpdateUser(ctx context.Context, id int64, fields map[string]interface{}) (*model.User, error) {
+	if len(fields) == 0 {
 		return nil, kerrors.BadRequest("INVALID_USER", "user is required")
 	}
-	if user.ID <= 0 {
+	if id <= 0 {
 		return nil, kerrors.BadRequest("INVALID_USER_ID", "user id must be greater than 0")
 	}
-	return uc.repo.Update(ctx, user)
+	return uc.repo.Update(ctx, id, fields)
 }
 
-func (uc *UserUsecase) ListUser(ctx context.Context, page, size int64) ([]*User, int64, error) {
+func (uc *UserUseCase) ListUser(ctx context.Context, page, size int64) ([]*model.User, int64, error) {
 	if page <= 0 {
 		page = 1
 	}

@@ -124,6 +124,18 @@ func main() {
 	genCfg.WithFileNameStrategy(func(tableName string) string {
 		return strings.TrimPrefix(tableName, tablePrefix)
 	})
+	// gorm/gen 默认把 tinyint(1) 映射为 bool，这里统一改为 int32，
+	// 避免像 gender/reg_type/is_del 这类“状态值字段”被错误收窄为布尔语义。
+	tinyIntAsInt32 := func(columnType gorm.ColumnType) string {
+		if detail, ok := columnType.ColumnType(); ok && strings.HasPrefix(strings.TrimSpace(strings.ToLower(detail)), "tinyint") {
+			return "int32"
+		}
+		return "int32"
+	}
+	genCfg.WithDataTypeMap(map[string]func(columnType gorm.ColumnType) (dataType string){
+		"tinyint": tinyIntAsInt32,
+		"TINYINT": tinyIntAsInt32,
+	})
 
 	g := gen.NewGenerator(genCfg)
 	g.UseDB(db)

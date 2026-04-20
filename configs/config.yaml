@@ -8,9 +8,9 @@ server:
 data:
   database:
     driver: mysql
-    source: root:liu123456@tcp(127.0.0.1:3306)/kratos_demo?parseTime=True&loc=Local
+    source: root:liu123456@tcp(192.168.1.98:3306)/kratos_demo?parseTime=True&loc=Local
     # 业务表统一前缀；gorm.io/gen 生成 Go 模型名/文件名时会剥掉此前缀
-    table_prefix: "ts_"
+    table_prefix: "m_"
     max_idle_conns: 10
     max_open_conns: 100
     conn_max_lifetime: 60s
@@ -44,7 +44,7 @@ log:
   # stdout / stderr
   output: stdout
   caller: true
-  # mysql/redis 慢日志阈值
-  slow_threshold: 200ms
+  # mysql/redis 慢日志阈值（google.protobuf.Duration 仅支持秒为单位，写成 0.2s 不要写 200ms）
+  slow_threshold: 0.2s
   # 是否忽略 gorm record not found 错误日志
   ignore_record_not_found: true

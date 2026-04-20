@@ -36,8 +36,8 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, conf
 	}
 	discovery := registry.NewDiscoveryFromParts(consulParts)
 	userRepo := data.NewUserRepo(dataData, logger, discovery, confData)
-	userUsecase := biz.NewUserUsecase(userRepo)
-	userService := service.NewUserService(userUsecase)
+	userUseCase := biz.NewUserUseCase(userRepo)
+	userService := service.NewUserService(userUseCase)
 	tokenValidator, err := server.NewTokenValidator(auth)
 	if err != nil {
 		cleanup()
