@@ -66,10 +66,11 @@ func NewUserRepo(data *Data, logger log.Logger, discovery registry.Discovery, c 
 	}
 }
 
-func (r *userRepo) Get(ctx context.Context, id int64) (*model.User, error) {
+func (r *userRepo) Get(ctx context.Context, id int64) (*biz.User, error) {
 	// 内部拉取（由 discovery 客户端触发）时，禁止再次发起远程拉取，避免递归。
 	if isInternalDiscoveryFetch(ctx) {
-		return r.findLocal(ctx, id)
+		u, err := r.findLocal(ctx, id)
+		return mapper.ModelUserToBiz(u), err
 	}
 
 	// 1) redis cache
@@ -77,7 +78,7 @@ func (r *userRepo) Get(ctx context.Context, id int64) (*model.User, error) {
 	if s, err := r.data.redis.Get(ctx, key).Result(); err == nil && s != "" {
 		var u model.User
 		if err := json.Unmarshal([]byte(s), &u); err == nil {
-			return &u, nil
+			return mapper.ModelUserToBiz(&u), nil
 		}
 		r.log.Warnf("redis unmarshal user failed: id=%d", id)
 	} else if err != nil && !errors.Is(err, goredis.Nil) {
@@ -92,7 +93,7 @@ func (r *userRepo) Get(ctx context.Context, id int64) (*model.User, error) {
 	if u != nil {
 		// 回填缓存（demo：固定 TTL）
 		r.cacheUser(ctx, key, u)
-		return u, nil
+		return mapper.ModelUserToBiz(u), nil
 	}
 
 	// 3) discovery remote fetch
@@ -138,7 +139,7 @@ func (r *userRepo) Get(ctx context.Context, id int64) (*model.User, error) {
 
 	u = mapper.ProtoToModelUser(rsp.User)
 	r.cacheUser(ctx, key, u)
-	return u, nil
+	return mapper.ModelUserToBiz(u), nil
 }
 
 func isInternalDiscoveryFetch(ctx context.Context) bool {
@@ -174,25 +175,26 @@ func (r *userRepo) findLocalFromDB(ctx context.Context, id int64) (*model.User, 
 	return result, nil
 }
 
-func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) Create(ctx context.Context, user *biz.User) (*biz.User, error) {
 	if user == nil {
 		return nil, nil
 	}
 
-	if err := r.data.q.User.WithContext(ctx).Create(user); err != nil {
+	m := mapper.BizUserToModel(user)
+	if err := r.data.q.User.WithContext(ctx).Create(m); err != nil {
 		return nil, err
 	}
-	created, err := r.findLocalFromDB(ctx, user.UserID)
+	created, err := r.findLocalFromDB(ctx, m.UserID)
 	if err != nil {
 		return nil, err
 	}
 	if created != nil {
 		r.cacheUser(ctx, fmt.Sprintf("user:%d", created.UserID), created)
 	}
-	return created, nil
+	return mapper.ModelUserToBiz(created), nil
 }
 
-func (r *userRepo) Update(ctx context.Context, id int64, fields map[string]interface{}) (*model.User, error) {
+func (r *userRepo) Update(ctx context.Context, id int64, fields map[string]interface{}) (*biz.User, error) {
 	if id <= 0 {
 		return nil, nil
 	}
@@ -211,10 +213,10 @@ func (r *userRepo) Update(ctx context.Context, id int64, fields map[string]inter
 	if updated != nil {
 		r.cacheUser(ctx, fmt.Sprintf("user:%d", updated.UserID), updated)
 	}
-	return updated, nil
+	return mapper.ModelUserToBiz(updated), nil
 }
 
-func (r *userRepo) List(ctx context.Context, page, size int64) ([]*model.User, int64, error) {
+func (r *userRepo) List(ctx context.Context, page, size int64) ([]*biz.User, int64, error) {
 	if page <= 0 {
 		page = 1
 	}
@@ -232,9 +234,9 @@ func (r *userRepo) List(ctx context.Context, page, size int64) ([]*model.User, i
 	if err != nil {
 		return nil, 0, err
 	}
-	list := make([]*model.User, 0, len(rows))
+	list := make([]*biz.User, 0, len(rows))
 	for _, row := range rows {
-		list = append(list, row)
+		list = append(list, mapper.ModelUserToBiz(row))
 	}
 	return list, total, nil
 }

@@ -1,6 +1,7 @@
-# 服务注册/发现示例（按实际注册中心调整）
+# 服务注册/发现（按实际注册中心调整）
+# enabled 须显式配置：false 不连 Consul；生产需为 true 并完成下方 consul 地址。
 registry:
-  # consul / etcd / nacos / kubernetes 等
+  enabled: false
   type: consul
   consul:
     address: 127.0.0.1:8500

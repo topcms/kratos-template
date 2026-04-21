@@ -31,6 +31,9 @@ func NewConsulParts(c *templateconf.Registry) (*ConsulParts, error) {
 	if c == nil {
 		return nil, nil
 	}
+	if !c.GetEnabled() {
+		return nil, nil
+	}
 	if c.Type != "consul" {
 		return nil, fmt.Errorf("unsupported registry type: %s", c.Type)
 	}

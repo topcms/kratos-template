@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"time"
+	"errors"
 
 	kerrors "github.com/go-kratos/kratos/v2/errors"
 	v1 "github.com/topcms/kratos-template/api/user/v1"
@@ -29,67 +29,27 @@ func (s *UserService) GetUser(ctx context.Context, in *v1.ReqUserDetail) (*v1.Rs
 		return nil, err
 	}
 	return &v1.RspUserDetail{
-		User: mapper.ModelUserToProto(u),
+		User: mapper.BizUserToProto(u),
 	}, nil
 }
 
 func (s *UserService) CreateUser(ctx context.Context, in *v1.ReqUserCreate) (*v1.RspUserCreate, error) {
-	created, err := s.uc.CreateUser(ctx, mapper.ProtoToModelUser(in.GetUser()))
+	created, err := s.uc.CreateUser(ctx, mapper.ProtoToBizUser(in.GetUser()))
 	if err != nil {
 		return nil, err
 	}
 	return &v1.RspUserCreate{
-		User: mapper.ModelUserToProto(created),
+		User: mapper.BizUserToProto(created),
 	}, nil
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, in *v1.ReqUserUpdate) (*v1.RspUserUpdate, error) {
-	fields := map[string]interface{}{
-		"updated_at": time.Now(),
-	}
-
-	if in.UserCode != nil {
-		fields["user_code"] = in.GetUserCode()
-	}
-	if in.UserName != nil {
-		fields["user_name"] = in.GetUserName()
-	}
-	if in.Avatar != nil {
-		fields["avatar"] = in.GetAvatar()
-	}
-	if in.Gender != nil {
-		fields["gender"] = in.GetGender()
-	}
-	if in.Introduction != nil {
-		fields["introduction"] = in.GetIntroduction()
-	}
-	if in.RegType != nil {
-		fields["reg_type"] = in.GetRegType()
-	}
-	if in.GetRegTime() != nil {
-		fields["reg_time"] = in.GetRegTime().AsTime()
-	}
-	if in.RegIp != nil {
-		fields["reg_ip"] = in.GetRegIp()
-	}
-	if in.Country != nil {
-		fields["country"] = in.GetCountry()
-	}
-	if in.Province != nil {
-		fields["province"] = in.GetProvince()
-	}
-	if in.City != nil {
-		fields["city"] = in.GetCity()
-	}
-	if in.Lang != nil {
-		fields["lang"] = in.GetLang()
-	}
-	if in.IsDel != nil {
-		fields["is_del"] = in.GetIsDel()
-	}
-
-	if len(fields) == 1 {
-		return nil, kerrors.BadRequest("INVALID_UPDATE_FIELDS", "no fields to update")
+	fields, err := mapper.ReqUserUpdateToDBFields(in)
+	if err != nil {
+		if errors.Is(err, mapper.ErrNoFieldsToUpdate) {
+			return nil, kerrors.BadRequest("INVALID_UPDATE_FIELDS", "no fields to update")
+		}
+		return nil, err
 	}
 
 	updated, err := s.uc.UpdateUser(ctx, in.GetUserId(), fields)
@@ -97,7 +57,7 @@ func (s *UserService) UpdateUser(ctx context.Context, in *v1.ReqUserUpdate) (*v1
 		return nil, err
 	}
 	return &v1.RspUserUpdate{
-		User: mapper.ModelUserToProto(updated),
+		User: mapper.BizUserToProto(updated),
 	}, nil
 }
 
@@ -108,7 +68,7 @@ func (s *UserService) ListUser(ctx context.Context, in *v1.ReqUserList) (*v1.Rsp
 	}
 	list := make([]*v1.UserInfo, 0, len(users))
 	for _, item := range users {
-		list = append(list, mapper.ModelUserToProto(item))
+		list = append(list, mapper.BizUserToProto(item))
 	}
 	return &v1.RspUserList{
 		Total: total,

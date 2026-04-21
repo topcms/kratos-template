@@ -884,9 +884,11 @@ func (x *Consul) GetWaitEvery() *durationpb.Duration {
 }
 
 type Registry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Type          string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-	Consul        *Consul                `protobuf:"bytes,2,opt,name=consul,proto3" json:"consul,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// false：不连接注册中心、不注册服务；true：按 type/consul 启用注册与发现。
+	Enabled       bool    `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	Type          string  `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Consul        *Consul `protobuf:"bytes,3,opt,name=consul,proto3" json:"consul,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -919,6 +921,13 @@ func (x *Registry) ProtoReflect() protoreflect.Message {
 // Deprecated: Use Registry.ProtoReflect.Descriptor instead.
 func (*Registry) Descriptor() ([]byte, []int) {
 	return file_conf_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *Registry) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
 }
 
 func (x *Registry) GetType() string {
@@ -1002,10 +1011,11 @@ const file_conf_proto_rawDesc = "" +
 	"\x06scheme\x18\x02 \x01(\tR\x06scheme\x12\x14\n" +
 	"\x05token\x18\x03 \x01(\tR\x05token\x128\n" +
 	"\n" +
-	"wait_every\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\twaitEvery\"R\n" +
-	"\bRegistry\x12\x12\n" +
-	"\x04type\x18\x01 \x01(\tR\x04type\x122\n" +
-	"\x06consul\x18\x02 \x01(\v2\x1a.kratos.template.v1.ConsulR\x06consulB6Z4github.com/topcms/kratos-template/internal/conf;confb\x06proto3"
+	"wait_every\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\twaitEvery\"l\n" +
+	"\bRegistry\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x122\n" +
+	"\x06consul\x18\x03 \x01(\v2\x1a.kratos.template.v1.ConsulR\x06consulB6Z4github.com/topcms/kratos-template/internal/conf;confb\x06proto3"
 
 var (
 	file_conf_proto_rawDescOnce sync.Once

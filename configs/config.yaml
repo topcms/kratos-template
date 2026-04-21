@@ -1,9 +1,9 @@
 server:
   http:
-    addr: 0.0.0.0:8000
+    addr: 0.0.0.0:8100
     timeout: 1s
   grpc:
-    addr: 0.0.0.0:9000
+    addr: 0.0.0.0:9100
     timeout: 1s
 data:
   database:
@@ -46,5 +46,5 @@ log:
   caller: true
   # mysql/redis 慢日志阈值（google.protobuf.Duration 仅支持秒为单位，写成 0.2s 不要写 200ms）
   slow_threshold: 0.2s
-  # 是否忽略 gorm record not found 错误日志
+  # 是否忽略 Gorm record not found 错误日志
   ignore_record_not_found: true

@@ -1,4 +1,4 @@
-version: v1
+version: v2
 # NOTE:
 # 1) buf module config files (buf.yaml/buf.lock) live in ./proto
 # 2) generation command runs from ./proto:
@@ -7,17 +7,17 @@ version: v1
 #      kratos-template/api/...
 #    If changed to ".", files will be generated into proto/api/... by mistake.
 plugins:
-  - plugin: go
+  - local: protoc-gen-go
     out: ..
     opt:
       - paths=import
       - module=github.com/topcms/kratos-template
-  - plugin: go-grpc
+  - local: protoc-gen-go-grpc
     out: ..
     opt:
       - paths=import
       - module=github.com/topcms/kratos-template
-  - plugin: go-http
+  - local: protoc-gen-go-http
     out: ..
     opt:
       - paths=import

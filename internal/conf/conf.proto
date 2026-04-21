@@ -113,6 +113,8 @@ message Consul {
 }
 
 message Registry {
-  string type   = 1;
-  Consul consul = 2;
+  // false：不连接注册中心、不注册服务；true：按 type/consul 启用注册与发现。
+  bool enabled = 1;
+  string type  = 2;
+  Consul consul = 3;
 }
